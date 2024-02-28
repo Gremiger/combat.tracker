@@ -1,15 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encounter Tracker</title>
+    <style>
+        /* Styles for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+    </style>
 </head>
 <body>
-<h1>Characters</h1>
+<h1>Encounter Tracker</h1>
+
+<!-- Button to open the modal -->
+<button onclick="openModal()">Add Monster</button>
+
+<!-- Modal popup -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span onclick="closeModal()" style="float: right; cursor: pointer;">&times;</span>
+        <h2>Add Monster</h2>
+        <form id="addMonsterForm" action="/addMonster" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="ac">AC:</label>
+            <input type="number" id="ac" name="ac" required><br><br>
+            <label for="initiative">Initiative:</label>
+            <input type="number" id="initiative" name="initiative" required><br><br>
+            <label for="maxHp">Max HP:</label>
+            <input type="number" id="maxHp" name="maxHp" required><br><br>
+            <button type="submit">Add Monster</button>
+        </form>
+    </div>
+</div>
+
+<h2>Characters</h2>
 <p th:text="${characters}"></p>
 
-<h1>Monsters</h1>
+<h2>Monsters</h2>
 <p th:text="${monsters}"></p>
+
+<script>
+        // Function to open the modal
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
 </body>
 </html>
