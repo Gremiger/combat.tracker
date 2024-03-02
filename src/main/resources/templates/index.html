@@ -1,9 +1,42 @@
 <!DOCTYPE html>
-<html lang="EN" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encounter Tracker</title>
     <style>
+
+        :root {
+            --background-color-light: #ffffff;
+            --text-color-light: #000000;
+            --background-color-dark: #000000;
+            --text-color-dark: #ffffff;
+        }
+
+        body {
+          background-color: var(--background-color-dark);
+          color: var(--text-color-dark);
+          transition: background-color 0.5s, color 0.5s;
+          margin: 0;
+          font-family: Arial, sans-serif;
+        }
+
+        body.light-theme {
+          background-color: var(--background-color-light);
+          color: var(--text-color-light);
+        }
+
+        .theme-switcher {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          cursor: pointer;
+        }
+
+        #theme-icon {
+            filter: '';
+        }
+
         /* Styles for the modal */
         .modal {
             display: none;
@@ -25,9 +58,14 @@
         }
 
     </style>
+
 </head>
 <body>
 <h1>Encounter Tracker</h1>
+
+<div class="theme-switcher">
+    <img id="theme-icon" th:src="@{images/sun-icon.png}" alt="Change Theme">
+</div>
 
 <button onclick="openModal('addCharacterModal')">Add Character</button>
 
@@ -79,6 +117,73 @@
 <p th:text="${monsters}"></p>
 
 <script>
+        //Apply the filter to the image at the start because the image is black
+        //and the default theme is obviously dark theme
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get a reference to the image element
+            const themeIcon = document.getElementById('theme-icon');
+
+            // Check if the theme preference is stored in localStorage
+            const themePreference = localStorage.getItem('themePreference');
+
+            // Apply the theme based on the stored preference
+            if (themePreference === 'light-theme') {
+                // Apply light theme
+                document.body.classList.add('light-theme');
+            } else {
+                // Apply dark theme (default)
+                document.body.classList.remove('light-theme');
+            }
+
+            // Apply the filter to the image if dark theme is applied
+            if (themePreference === 'dark-theme') {
+                themeIcon.style.filter = 'invert(1)';
+            }
+
+
+            // Toggle theme function
+            function toggleTheme() {
+                const body = document.body;
+                const currentTheme = body.classList.contains('light-theme') ? 'light-theme' : 'dark-theme';
+
+                // Toggle between light and dark themes
+                body.classList.toggle('light-theme');
+
+                // Update the theme preference in localStorage
+                const newTheme = body.classList.contains('light-theme') ? 'light-theme' : 'dark-theme';
+                localStorage.setItem('themePreference', newTheme);
+
+                // Apply or remove the filter based on the new theme
+                if (newTheme === 'dark-theme') {
+                    themeIcon.style.filter = 'invert(1)';
+                } else {
+                    themeIcon.style.filter = '';
+                }
+            }
+
+
+        // Add event listener to the theme switcher button
+        const themeSwitcher = document.querySelector('.theme-switcher');
+        themeSwitcher.addEventListener('click', toggleTheme);
+        });
+/*
+        function toggleTheme() {
+          const body = document.body;
+          const themeIcon = document.getElementById('theme-icon');
+          const currentSrc = themeIcon.getAttribute('th:src');
+          if (body.classList.contains('light-theme')) {
+            body.classList.remove('light-theme');
+            themeIcon.setAttribute('th:src', '@{images/sun-icon.png}'); // Dark theme icon
+            themeIcon.alt = 'Dark Theme';
+            themeIcon.style.filter = 'invert(1)'; // Apply inversion for dark theme
+          } else {
+            body.classList.add('light-theme');
+            themeIcon.setAttribute('th:src', '@{images/sun-icon.png}'); // Light theme icon
+            themeIcon.alt = 'Light Theme';
+            themeIcon.style.filter = ''; // Remove inversion for light theme
+          }
+        }
+*/
         // Function to open a modal
         function openModal(modalName) {
             document.getElementById(modalName).style.display = "block";
