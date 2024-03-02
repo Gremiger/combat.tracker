@@ -1,5 +1,6 @@
 package com.pibes.dnd.combat.tracker.controller;
 
+import com.pibes.dnd.combat.tracker.Character;
 import com.pibes.dnd.combat.tracker.Monster;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,7 @@ import java.util.List;
 @Controller
 public class EncounterController {
 
-    private List<String> characters = new ArrayList<>();
+    private List<Character> characters = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<>();
 
     @GetMapping("/dnd")
@@ -23,13 +24,14 @@ public class EncounterController {
     }
 
     @PostMapping("/addCharacter")
-    public String addCharacter() {
-        characters.add("New Character");
+    public String addCharacter(@RequestParam String name, @RequestParam int ac, @RequestParam int initiative, @RequestParam int health) {
+        Character character = new Character(name, ac, initiative, health);
+        characters.add(character);
         return "redirect:/dnd";
     }
 
     @PostMapping("/addMonster")
-    public String addMonster(@RequestParam("name") String name, @RequestParam int ac, @RequestParam int initiative, @RequestParam int health) {
+    public String addMonster(@RequestParam String name, @RequestParam int ac, @RequestParam int initiative, @RequestParam int health) {
         Monster monster = new Monster(name, ac, initiative, health);
         monsters.add(monster);
         // Redirect back to the /dnd page

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="EN">
+<html lang="EN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Encounter Tracker</title>
@@ -23,32 +23,54 @@
             border: 1px solid #888;
             width: 80%;
         }
+
     </style>
 </head>
 <body>
 <h1>Encounter Tracker</h1>
 
+<button onclick="openModal('addCharacterModal')">Add Character</button>
+
+<div class="modal" id="addCharacterModal">
+    <div class="modal-content">
+        <span onclick="closeModal('addCharacterModal')" style="float: right; cursor: pointer;">&times;</span>
+        <h2>Add Character</h2>
+        <form action="/addCharacter" id="addCharacterForm" method="post">
+            <label for="charName">Name:</label>
+            <input id="charName" name="name" required type="text"><br><br>
+            <label for="charAC">AC:</label>
+            <input id="charAC" min="1" name="ac" required type="number" placeholder="0"><br><br>
+            <label for="charInitiative">Initiative:</label>
+            <input id="charInitiative" min="1" name="initiative" required type="number" placeholder="0"><br><br>
+            <label for="charHealth">Max HP:</label>
+            <input id="charHealth" min="1" name="health" required type="number" placeholder="0"><br><br>
+            <button type="submit">Add Character</button>
+        </form>
+    </div>
+</div>
+
 <!-- Button to open the modal -->
-<button onclick="openModal()">Add Monster</button>
+<button onclick="openModal('addMonsterModal')">Add Monster</button>
 
 <!-- Modal popup -->
-<div id="myModal" class="modal">
+<div class="modal" id="addMonsterModal">
     <div class="modal-content">
-        <span onclick="closeModal()" style="float: right; cursor: pointer;">&times;</span>
+        <span onclick="closeModal('addMonsterModal')" style="float: right; cursor: pointer;">&times;</span>
         <h2>Add Monster</h2>
-        <form id="addMonsterForm" action="/addMonster" method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br><br>
-            <label for="ac">AC:</label>
-            <input type="number" id="ac" name="ac" required><br><br>
-            <label for="initiative">Initiative:</label>
-            <input type="number" id="initiative" name="initiative" required><br><br>
-            <label for="health">Max HP:</label>
-            <input type="number" id="health" name="health" required><br><br>
+        <form action="/addMonster" id="addMonsterForm" method="post">
+            <label for="monsterName">Name:</label>
+            <input id="monsterName" name="name" required type="text"><br><br>
+            <label for="monsterAC">AC:</label>
+            <input id="monsterAC" min="1" name="ac" required type="number" placeholder="0"><br><br>
+            <label for="monsterInitiative">Initiative:</label>
+            <input id="monsterInitiative" min="1" name="initiative" required type="number" placeholder="0"><br><br>
+            <label for="monsterHealth">Max HP:</label>
+            <input id="monsterHealth" min="1" name="health" required type="number" placeholder="0"><br><br>
             <button type="submit">Add Monster</button>
         </form>
     </div>
 </div>
+
 
 <h2>Characters</h2>
 <p th:text="${characters}"></p>
@@ -57,15 +79,16 @@
 <p th:text="${monsters}"></p>
 
 <script>
-        // Function to open the modal
-        function openModal() {
-            document.getElementById("myModal").style.display = "block";
+        // Function to open a modal
+        function openModal(modalName) {
+            document.getElementById(modalName).style.display = "block";
         }
 
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById("myModal").style.display = "none";
+        // Function to close a modal
+        function closeModal(modalName) {
+            document.getElementById(modalName).style.display = "none";
         }
-    </script>
+
+</script>
 </body>
 </html>
