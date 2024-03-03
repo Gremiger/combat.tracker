@@ -37,6 +37,8 @@
 
         #theme-icon {
             filter: '';
+            width: 35px;
+            height: 35px;
         }
 
         /* Styles for the modal */
@@ -126,8 +128,6 @@
 <p th:text="${monsters}"></p>
 
 <script>
-        //Apply the filter to the image at the start because the image is black
-        //and the default theme is obviously dark theme
         document.addEventListener("DOMContentLoaded", function() {
             // Get a reference to the image element
             const themeIcon = document.getElementById('theme-icon');
@@ -175,24 +175,7 @@
         const themeSwitcher = document.querySelector('.theme-switcher');
         themeSwitcher.addEventListener('click', toggleTheme);
         });
-/*
-        function toggleTheme() {
-          const body = document.body;
-          const themeIcon = document.getElementById('theme-icon');
-          const currentSrc = themeIcon.getAttribute('th:src');
-          if (body.classList.contains('light-theme')) {
-            body.classList.remove('light-theme');
-            themeIcon.setAttribute('th:src', '@{images/sun-icon.png}'); // Dark theme icon
-            themeIcon.alt = 'Dark Theme';
-            themeIcon.style.filter = 'invert(1)'; // Apply inversion for dark theme
-          } else {
-            body.classList.add('light-theme');
-            themeIcon.setAttribute('th:src', '@{images/sun-icon.png}'); // Light theme icon
-            themeIcon.alt = 'Light Theme';
-            themeIcon.style.filter = ''; // Remove inversion for light theme
-          }
-        }
-*/
+
         // Function to open a modal
         function openModal(modalName) {
             document.getElementById(modalName).style.display = "block";
