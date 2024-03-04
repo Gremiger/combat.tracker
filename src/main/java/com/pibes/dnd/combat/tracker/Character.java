@@ -1,19 +1,30 @@
 package com.pibes.dnd.combat.tracker;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-public class Character extends Combatant{
-    public Character(String name, int ac, int initiative, int health){
-        //super(name, ac, initiative, health);
-        this.setName(name);
-        this.setAc(ac);
-        this.setInitiative(initiative);
-        this.setHealth(health);
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Character extends Combatant {
+    private int temporalHealth;
+
+    public Character(String name, int ac, int initiative, int health) {
+        super(name, ac, initiative, health);
+        this.temporalHealth = health;
     }
+
     @Override
     public String toString() {
-        String var10000 = this.getName();
-        return "Character(name=" + var10000 + ", ac=" + this.getAc() + ", initiative=" + this.getInitiative() + ", health=" + this.getHealth() + ")";
+        return "Character{" +
+                "name='" + getName() + '\'' +
+                ", ac=" + getAc() +
+                ", initiative=" + getInitiative() +
+                ", health=" + getHealth() +
+                ", temporalHealth=" + temporalHealth +
+                '}';
     }
 }
