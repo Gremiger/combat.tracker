@@ -131,7 +131,7 @@
 <ul id="current-order">
     <li th:each="combatant : ${combatants}">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
-              th:text="'Charact: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')' + '(HP: ' + ${combatant.health}')'"></span>
+              th:text="'Charact: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')' + '(HP: ' + ${combatant.health} + ')'"></span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"
               th:text="'Monster: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')' + '(HP: ' + ${combatant.health} + ')'"></span>
         <input id="dmg_heal" type="number" name="dmg_heal" min="1" placeholder="0">
