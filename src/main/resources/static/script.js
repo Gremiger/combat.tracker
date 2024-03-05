@@ -56,10 +56,33 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(modalName).style.display = "none";
         }
 
-        function healCombatant(){
-            console.log('healing');
+        function healCombatant(button){
+            var parent = button.parentElement;
+            var combatantID = parent.id;
+            var amount = parent.children.dmg_heal.value
+            console.log('healing combatant ' + combatantID + " by: " + amount);
+
+            axios.post('/healCombatant', {combatantID: combatantID, amount: amount})
+            .then(function(response) {
+                //Handle response
+                console.log('Combatant Healed: ', response);
+            })
+            .catch(function(error){
+                console.error('Error in healing: ', error);
+            })
         }
 
-        function dmgCombatant(){
-            console.log('damaging');
+        function dmgCombatant(button){
+            var parent = button.parentElement;
+            var combatantID = parent.id;
+            var amount = parent.children.dmg_heal.value
+            console.log('damaging combatant ' + combatantID + " by: " + amount);
+            axios.post('/dmgCombatant', {combatantId: combatantID, amount: amount})
+                        .then(function(response) {
+                            //Handle response
+                            console.log('Combatant Damaged: ', response);
+                        })
+                        .catch(function(error){
+                            console.error('Error in damaging: ', error);
+                        })
         }

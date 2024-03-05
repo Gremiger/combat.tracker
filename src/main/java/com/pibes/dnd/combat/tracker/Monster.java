@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Monster extends Combatant {
-    private int temporalHealth;
+
 
     public Monster(String name, int ac, int initiative, int health) {
         super(name, ac, initiative, health);
-        this.temporalHealth = health;
     }
+
 
     @Override
     public String toString() {
@@ -24,7 +23,7 @@ public class Monster extends Combatant {
                 ", ac=" + getAc() +
                 ", initiative=" + getInitiative() +
                 ", health=" + getHealth() +
-                ", temporalHealth=" + temporalHealth +
+                ", temporalHealth=" + getTemporalHealth() +
                 '}';
     }
 }

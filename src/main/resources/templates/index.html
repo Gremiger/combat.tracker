@@ -69,6 +69,9 @@
         }
 
     </style>
+    <!-- Include Axios from a CDN -->
+    <!-- It's an alternative to JQuery, using JQuery only to AJAX Calls is an overkill-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/script.js" th:src="@{/script.js}"></script>
 </head>
 <body>
@@ -129,14 +132,14 @@
 
 <h2>Current Order</h2>
 <ul id="current-order">
-    <li th:each="combatant : ${combatants}">
+    <li th:each="combatant : ${combatants}" th:id="${combatant.id}">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
-              th:text="'Charact: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')' + '(HP: ' + ${combatant.health} + ')'"></span>
+              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')' + ' (HP: ' + ${combatant.temporalHealth} + ' / ' + ${combatant.health} + ')'"></span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"
-              th:text="'Monster: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')' + '(HP: ' + ${combatant.health} + ')'"></span>
+              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')' + ' (HP: ' + ${combatant.temporalHealth} + ' / ' + ${combatant.health} + ')'"></span>
         <input id="dmg_heal" type="number" name="dmg_heal" min="1" placeholder="0">
-        <button onclick="healCombatant()">HEAL</button>
-        <button onclick="dmgCombatant()"> DAMAGE</button>
+        <button onclick="healCombatant(this)">HEAL</button>
+        <button onclick="dmgCombatant(this)"> DAMAGE</button>
     </li>
 </ul>
 

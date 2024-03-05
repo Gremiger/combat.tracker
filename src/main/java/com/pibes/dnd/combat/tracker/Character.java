@@ -7,14 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Character extends Combatant {
-    private int temporalHealth;
 
     public Character(String name, int ac, int initiative, int health) {
         super(name, ac, initiative, health);
-        this.temporalHealth = health;
     }
 
     @Override
@@ -24,7 +21,7 @@ public class Character extends Combatant {
                 ", ac=" + getAc() +
                 ", initiative=" + getInitiative() +
                 ", health=" + getHealth() +
-                ", temporalHealth=" + temporalHealth +
+                ", temporalHealth=" + getTemporalHealth()+
                 '}';
     }
 }
