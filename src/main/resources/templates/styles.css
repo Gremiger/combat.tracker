@@ -1,0 +1,66 @@
+:root {
+    --background-color-light: #ffffff;
+    --text-color-light: #000000;
+    --background-color-dark: #000000;
+    --text-color-dark: #ffffff;
+    --modal-color-light: #fefefe;
+    --modal-color-dark: #0e0e0e;
+}
+
+body {
+  background-image: url("images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-size: cover; /* Scale the image to cover the entire background */
+  background-position: center; /* Center the image */
+  background-attachment: fixed; /* Fix the background image */
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+  transition: background-color 2.5s, color 0.5s;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+body.light-theme {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+}
+
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+#theme-icon {
+    filter: '';
+    width: 35px;
+    height: 35px;
+}
+
+/* Styles for the modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(14, 14, 14, 0.4);
+}
+.modal-content {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    transition: background-color 0.5s, color 2.5s; /* Add transition for smooth theme change (Even though the theme-change cannot be called when using the modal*/
+}
+
+body.light-theme .modal-content {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}

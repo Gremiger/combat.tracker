@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encounter Tracker</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
     <style>
-
         :root {
             --background-color-light: #ffffff;
             --text-color-light: #000000;
@@ -16,6 +16,11 @@
         }
 
         body {
+          background-image: url("images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
+          background-repeat: no-repeat; /* Prevent the image from repeating */
+          background-size: cover; /* Scale the image to cover the entire background */
+          background-position: center; /* Center the image */
+          background-attachment: fixed; /* Fix the background image */
           background-color: var(--background-color-dark);
           color: var(--text-color-dark);
           transition: background-color 2.5s, color 0.5s;
@@ -67,7 +72,6 @@
             background-color: var(--background-color-light);
             color: var(--text-color-light);
         }
-
     </style>
     <!-- Include Axios from a CDN -->
     <!-- It's an alternative to JQuery, using JQuery only to AJAX Calls is an overkill-->
