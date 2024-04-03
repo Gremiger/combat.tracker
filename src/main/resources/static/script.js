@@ -56,33 +56,63 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(modalName).style.display = "none";
         }
 
+        /**
+        * This function is used to heal a combatant in a game.
+        * It sends a POST request to the '/healCombatant' endpoint with the combatant's ID and the amount to heal.
+        * If the request is successful, it updates the combatant's health in the DOM.
+        * If the request fails, it logs the error message.
+        *
+        * @param {Object} button - The button element that triggered the function.
+        */
         function healCombatant(button){
             var parent = button.parentElement;
             var combatantID = parent.id;
             var amount = parent.children.dmg_heal.value
             console.log('healing combatant ' + combatantID + " by: " + amount);
-
-            axios.post('/healCombatant', {combatantID: combatantID, amount: amount})
+            axios.post('/healCombatant', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
             .then(function(response) {
-                //Handle response
-                console.log('Combatant Healed: ', response);
+                console.log('Combatant Healed: ', response.data);
+                // Update the temporal health in the DOM
+                var temporalHealthElement = parent.querySelector('.temporal-health');
+                if (temporalHealthElement) {
+                    temporalHealthElement.innerText = response.data.newTemporalHealth;
+                }
             })
-            .catch(function(error){
-                console.error('Error in healing: ', error);
-            })
+            .catch(function(error) {
+                console.error('Error in healing: ', error.response.data);
+            });
         }
 
+        /**
+        * This function is used to damage a combatant in a game.
+        * It sends a POST request to the '/dmgCombatant' endpoint with the combatant's ID and the amount of damage.
+        * If the request is successful, it updates the combatant's health in the DOM.
+        * If the request fails, it logs the error message.
+        *
+        * @param {Object} button - The button element that triggered the function.
+        */
         function dmgCombatant(button){
-            var parent = button.parentElement;
-            var combatantID = parent.id;
-            var amount = parent.children.dmg_heal.value
-            console.log('damaging combatant ' + combatantID + " by: " + amount);
-            axios.post('/dmgCombatant', {combatantId: combatantID, amount: amount})
-                        .then(function(response) {
-                            //Handle response
-                            console.log('Combatant Damaged: ', response);
-                        })
-                        .catch(function(error){
-                            console.error('Error in damaging: ', error);
-                        })
+            const parent = button.parentElement;
+            const combatantID = parent.id;
+            const amount = parent.children.dmg_heal.value;
+
+            axios.post('/dmgCombatant', `combatantId=${encodeURIComponent(combatantID)}&amount=${encodeURIComponent(amount)}`, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    console.log('Combatant Damaged: ', response.data);
+                    const temporalHealthElement = parent.querySelector('.temporal-health');
+                    if (temporalHealthElement) {
+                        temporalHealthElement.innerText = response.data.newTemporalHealth;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error in damaging: ', error.response.data);
+                });
         }

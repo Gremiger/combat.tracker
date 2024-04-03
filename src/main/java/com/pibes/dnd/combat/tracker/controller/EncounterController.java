@@ -3,13 +3,17 @@ package com.pibes.dnd.combat.tracker.controller;
 import com.pibes.dnd.combat.tracker.Character;
 import com.pibes.dnd.combat.tracker.Combatant;
 import com.pibes.dnd.combat.tracker.Monster;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EncounterController {
@@ -57,29 +61,51 @@ public class EncounterController {
 
     @PostMapping("/healCombatant")
     @ResponseBody
-    public String healCombatant(@RequestParam int combatantId, @RequestParam int amount) {
-        // Find the combatant by ID and update its temporal health
-        Combatant combatant = findCombatantById(combatantId);
-        if (combatant != null) {
-            combatant.setTemporalHealth(combatant.getTemporalHealth() + amount);
-            return "Combatant healed. New health: " + combatant.getTemporalHealth();
-        } else {
-            return "Combatant not found.";
+    public ResponseEntity<?> healCombatant(@RequestParam String combatantId, @RequestParam String amount) {
+        try {
+            // Find the combatant by ID and update its temporal health
+            int amt = Integer.parseInt(amount);
+            int combatantID = Integer.parseInt(combatantId);
+            Combatant combatant = findCombatantById(combatantID);
+            if (combatant != null) {
+                combatant.setTemporalHealth(combatant.getTemporalHealth() + amt);
+                // Create a Map to hold both the new temporal health and a success message
+                Map<String, Object> response = new HashMap<>();
+                response.put("newTemporalHealth", combatant.getTemporalHealth());
+                response.put("message", "Combatant healed successfully.");
+
+                // Return the response Map
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid parameters.");
         }
     }
 
     @PostMapping("/dmgCombatant")
     @ResponseBody
-    public String dmgCombatant(@RequestParam String combatantId, @RequestParam String amount) {
-        // Find the combatant by ID and update its temporal health
-        int amt = Integer.valueOf(amount);
-        int combatantID = Integer.valueOf(combatantId);
-        Combatant combatant = findCombatantById(combatantID);
-        if (combatant != null) {
-            combatant.setTemporalHealth(combatant.getTemporalHealth() - amt);
-            return "Combatant damaged. New health: " + combatant.getTemporalHealth();
-        } else {
-            return "Combatant not found.";
+    public ResponseEntity<?> dmgCombatant(@RequestParam String combatantId, @RequestParam String amount) {
+        try{
+            // Find the combatant by ID and update its temporal health
+            int amt = Integer.parseInt(amount);
+            int combatantID = Integer.parseInt(combatantId);
+            Combatant combatant = findCombatantById(combatantID);
+            if (combatant != null) {
+                combatant.setTemporalHealth(combatant.getTemporalHealth() - amt);
+                // Create a Map to hold both the new temporal health and a success message
+                Map<String, Object> response = new HashMap<>();
+                response.put("newTemporalHealth", combatant.getTemporalHealth());
+                response.put("message", "Combatant damaged successfully.");
+
+                // Return the response Map
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid parameters.");
         }
     }
 

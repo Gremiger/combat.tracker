@@ -134,10 +134,16 @@
 <ul id="current-order">
     <li th:each="combatant : ${combatants}" th:id="${combatant.id}">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
-              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')' + ' (HP: ' + ${combatant.temporalHealth} + ' / ' + ${combatant.health} + ')'"></span>
+              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"
-              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')' + ' (HP: ' + ${combatant.temporalHealth} + ' / ' + ${combatant.health} + ')'"></span>
-        <input id="dmg_heal" type="number" name="dmg_heal" min="1" placeholder="0">
+              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+
+        <!-- Separate elements for max health and temporal health -->
+        <span> (Max HP: <span class="max-health" th:text="${combatant.health}"></span>)</span>
+        <span> (Temporal HP: <span class="temporal-health" th:text="${combatant.temporalHealth}"></span>)</span>
+
+        <!-- Input and buttons for damaging/healing -->
+        <input class="dmg-heal" type="number" name="dmg_heal" min="1" placeholder="0">
         <button onclick="healCombatant(this)">HEAL</button>
         <button onclick="dmgCombatant(this)"> DAMAGE</button>
     </li>
