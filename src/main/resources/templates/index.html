@@ -69,7 +69,10 @@
         }
 
     </style>
-
+    <!-- Include Axios from a CDN -->
+    <!-- It's an alternative to JQuery, using JQuery only to AJAX Calls is an overkill-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/script.js" th:src="@{/script.js}"></script>
 </head>
 <body>
 <h1>Encounter Tracker</h1>
@@ -129,73 +132,22 @@
 
 <h2>Current Order</h2>
 <ul id="current-order">
-    <li th:each="combatant : ${combatants}">
+    <li th:each="combatant : ${combatants}" th:id="${combatant.id}">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
-              th:text="'Charact: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"
-              th:text="'Monster: ' + ${combatant.name} + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+
+        <!-- Separate elements for max health and temporal health -->
+        <span> (Max HP: <span class="max-health" th:text="${combatant.health}"></span>)</span>
+        <span> (Temporal HP: <span class="temporal-health" th:text="${combatant.temporalHealth}"></span>)</span>
+
+        <!-- Input and buttons for damaging/healing -->
+        <input class="dmg-heal" type="number" name="dmg_heal" min="1" placeholder="0">
+        <button onclick="healCombatant(this)">HEAL</button>
+        <button onclick="dmgCombatant(this)"> DAMAGE</button>
     </li>
 </ul>
 
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get a reference to the image element
-            const themeIcon = document.getElementById('theme-icon');
-
-            // Check if the theme preference is stored in localStorage
-            const themePreference = localStorage.getItem('themePreference');
-
-            // Apply the theme based on the stored preference
-            if (themePreference === 'light-theme') {
-                // Apply light theme
-                document.body.classList.add('light-theme');
-            } else {
-                // Apply dark theme (default)
-                document.body.classList.remove('light-theme');
-            }
-
-            // Apply the filter to the image if dark theme is applied
-            if (themePreference === 'dark-theme') {
-                themeIcon.style.filter = 'invert(1)';
-            }
-
-
-            // Toggle theme function
-            function toggleTheme() {
-                const body = document.body;
-                const currentTheme = body.classList.contains('light-theme') ? 'light-theme' : 'dark-theme';
-
-                // Toggle between light and dark themes
-                body.classList.toggle('light-theme');
-
-                // Update the theme preference in localStorage
-                const newTheme = body.classList.contains('light-theme') ? 'light-theme' : 'dark-theme';
-                localStorage.setItem('themePreference', newTheme);
-
-                // Apply or remove the filter based on the new theme
-                if (newTheme === 'dark-theme') {
-                    themeIcon.style.filter = 'invert(1)';
-                } else {
-                    themeIcon.style.filter = '';
-                }
-            }
-
-
-        // Add event listener to the theme switcher button
-        const themeSwitcher = document.querySelector('.theme-switcher');
-        themeSwitcher.addEventListener('click', toggleTheme);
-        });
-
-        // Function to open a modal
-        function openModal(modalName) {
-            document.getElementById(modalName).style.display = "block";
-        }
-
-        // Function to close a modal
-        function closeModal(modalName) {
-            document.getElementById(modalName).style.display = "none";
-        }
-
-</script>
 </body>
 </html>
