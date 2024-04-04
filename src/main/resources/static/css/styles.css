@@ -8,7 +8,7 @@
 }
 
 body {
-  background-image: url("images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
+  background-image: url("../images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
   background-repeat: no-repeat; /* Prevent the image from repeating */
   background-size: cover; /* Scale the image to cover the entire background */
   background-position: center; /* Center the image */
