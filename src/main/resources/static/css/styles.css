@@ -1,3 +1,6 @@
+/* Import custom font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 :root {
     --background-color-light: #ffffff;
     --text-color-light: #000000;
@@ -17,7 +20,42 @@ body {
   color: var(--text-color-dark);
   transition: background-color 2.5s, color 0.5s;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+body .form{
+    background-color: blue;/*var(--background-color-dark);*/
+    color: yellow/*var(--text-color-dark);*/
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/*
+body .form-label{
+    color: var(--text-color-dark);
+}
+*/
+
+body .form-label {
+    color: #9e9e9e; /* Light grey for labels */
+    margin-bottom: .5rem; /* Space between label and control */
+    display: block; /* Ensure the label is on its own line */
+}
+
+body .form-control {
+    background-color: #2a2a2a; /* Dark grey for input background */
+    color: var(--text-color-dark);
+}
+
+body .form-control::placeholder {
+    color: #757575; /* Mid-grey for placeholder text */
+}
+
+body .form-control:focus {
+    border-color: #0d6efd; /* Bright blue for focus state */
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25); /* Optional glow effect */
 }
 
 body.light-theme {
@@ -25,6 +63,28 @@ body.light-theme {
   color: var(--text-color-light);
 }
 
+/*body.light-theme .form-label{
+    color: var(--text-color-light);
+}*/
+body.light-theme .form-label {
+    color: #444; /* Dark but not too stark */
+    margin-bottom: .5rem; /* Space between label and control */
+    display: block; /* Ensure the label is on its own line */
+}
+body.light-theme .form-control {
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark grey text */
+}
+
+body.light-theme .form-control::placeholder {
+    color: #a9a9a9; /* Lighter text for placeholder */
+}
+
+body.light-theme .form-control:focus {
+    border-color: #007bff; /* Highlight focus with a blue border */
+    outline: none; /* Optional: removes the default focus outline */
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 123, 255, 0.6); /* Optional: adds a subtle glow */
+}
 .theme-switcher {
   position: fixed;
   top: 20px;
@@ -50,7 +110,8 @@ body.light-theme {
     overflow: auto;
     background-color: rgba(14, 14, 14, 0.4);
 }
-.modal-content {
+
+body .modal-content {
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
     margin: 15% auto;
@@ -58,6 +119,33 @@ body.light-theme {
     border: 1px solid #888;
     width: 80%;
     transition: background-color 0.5s, color 2.5s; /* Add transition for smooth theme change (Even though the theme-change cannot be called when using the modal*/
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+}
+
+body.light-theme .modal-content {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 body.light-theme .modal-content {

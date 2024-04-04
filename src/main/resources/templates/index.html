@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encounter Tracker</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <!-- Include Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <!-- Include Axios from a CDN -->
     <!-- It's an alternative to JQuery, using JQuery only to AJAX Calls is an overkill-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -17,22 +22,22 @@
     <img id="theme-icon" th:src="@{images/sun-icon.png}" alt="Change Theme">
 </div>
 
-<button onclick="openModal('addCharacterModal')">Add Character</button>
+<button class="btn btn-primary" onclick="openModal('addCharacterModal')"><i class="fas fa-plus"></i>Add Character</button>
 
 <div class="modal" id="addCharacterModal">
     <div class="modal-content">
         <span onclick="closeModal('addCharacterModal')" style="float: right; cursor: pointer;">&times;</span>
         <h2>Add Character</h2>
         <form action="/addCharacter" id="addCharacterForm" method="post">
-            <label for="charName">Name:</label>
-            <input id="charName" name="name" required type="text"><br><br>
-            <label for="charAC">AC:</label>
-            <input id="charAC" min="1" name="ac" required type="number" placeholder="0"><br><br>
-            <label for="charInitiative">Initiative:</label>
-            <input id="charInitiative" min="1" name="initiative" required type="number" placeholder="0"><br><br>
-            <label for="charHealth">Max HP:</label>
-            <input id="charHealth" min="1" name="health" required type="number" placeholder="0"><br><br>
-            <button type="submit">Add Character</button>
+            <label for="charName" class="form-label">Name:</label>
+            <input id="charName" name="name" required type="text" class="form-control"><br><br>
+            <label for="charAC" class="form-label">AC:</label>
+            <input id="charAC" min="1" name="ac" required type="number" placeholder="0" class="form-control"><br><br>
+            <label for="charInitiative" class="form-label">Initiative:</label>
+            <input id="charInitiative" min="1" name="initiative" required type="number" placeholder="0" class="form-control"><br><br>
+            <label for="charHealth" class="form-label">Max HP:</label>
+            <input id="charHealth" min="1" name="health" required type="number" placeholder="0" class="form-control"><br><br>
+            <button type="submit" class="btn btn-primary">Add Character</button>
         </form>
     </div>
 </div>
