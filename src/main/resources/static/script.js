@@ -9,16 +9,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (themePreference === 'light-theme') {
                 // Apply light theme
                 document.body.classList.add('light-theme');
+                document.body.classList.remove('dark-theme');
             } else {
                 // Apply dark theme (default)
+                document.body.classList.add('dark-theme');
+                themeIcon.style.filter = 'invert(1)';
                 document.body.classList.remove('light-theme');
             }
-
-            // Apply the filter to the image if dark theme is applied
-            if (themePreference === 'dark-theme') {
-                themeIcon.style.filter = 'invert(1)';
-            }
-
 
             // Toggle theme function
             function toggleTheme() {
@@ -27,23 +24,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Toggle between light and dark themes
                 body.classList.toggle('light-theme');
+                body.classList.toggle('dark-theme');
 
                 // Update the theme preference in localStorage
                 const newTheme = body.classList.contains('light-theme') ? 'light-theme' : 'dark-theme';
                 localStorage.setItem('themePreference', newTheme);
 
                 // Apply or remove the filter based on the new theme
-                if (newTheme === 'dark-theme') {
-                    themeIcon.style.filter = 'invert(1)';
-                } else {
-                    themeIcon.style.filter = '';
-                }
+                themeIcon.style.filter = newTheme === 'dark-theme' ? 'invert(1)' : '';
             }
 
-
-        // Add event listener to the theme switcher button
-        const themeSwitcher = document.querySelector('.theme-switcher');
-        themeSwitcher.addEventListener('click', toggleTheme);
+            // Add event listener to the theme switcher button
+            const themeSwitcher = document.querySelector('.theme-switcher');
+            themeSwitcher.addEventListener('click', toggleTheme);
         });
 
         // Function to open a modal

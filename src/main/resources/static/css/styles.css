@@ -10,21 +10,20 @@
     --modal-color-dark: #0e0e0e;
 }
 
-body {
-  background-image: url("../images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  background-size: cover; /* Scale the image to cover the entire background */
-  background-position: center; /* Center the image */
-  background-attachment: fixed; /* Fix the background image */
+body.dark-theme {
+  /* background-image: url("../images/Zefiro.jpg"); /* If the image is in an "images" subdirectory */
+  /* background-repeat: no-repeat; /* Prevent the image from repeating */
+  /* background-size: cover; /* Scale the image to cover the entire background */
+  /* background-position: center; /* Center the image */
+  /* background-attachment: fixed; /* Fix the background image */
   background-color: var(--background-color-dark);
   color: var(--text-color-dark);
-  transition: background-color 2.5s, color 0.5s;
+  transition: background-color 0.23s, color 0.5s;
   margin: 0;
   font-family: 'Roboto', sans-serif;
-
 }
 
-body .form{
+body.dark-theme .form{
     background-color: blue;/*var(--background-color-dark);*/
     color: yellow/*var(--text-color-dark);*/
     padding: 2rem;
@@ -37,22 +36,22 @@ body .form-label{
 }
 */
 
-body .form-label {
+body.dark-theme .form-label {
     color: #9e9e9e; /* Light grey for labels */
     margin-bottom: .5rem; /* Space between label and control */
     display: block; /* Ensure the label is on its own line */
 }
 
-body .form-control {
+body.dark-theme .form-control {
     background-color: #2a2a2a; /* Dark grey for input background */
     color: var(--text-color-dark);
 }
 
-body .form-control::placeholder {
+body.dark-theme .form-control::placeholder {
     color: #757575; /* Mid-grey for placeholder text */
 }
 
-body .form-control:focus {
+body.dark-theme .form-control:focus {
     border-color: #0d6efd; /* Bright blue for focus state */
     outline: none; /* Remove default focus outline */
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25); /* Optional glow effect */
@@ -71,6 +70,7 @@ body.light-theme .form-label {
     margin-bottom: .5rem; /* Space between label and control */
     display: block; /* Ensure the label is on its own line */
 }
+
 body.light-theme .form-control {
     background-color: #f0f0f0; /* Light grey background */
     color: #333; /* Dark grey text */
@@ -85,6 +85,7 @@ body.light-theme .form-control:focus {
     outline: none; /* Optional: removes the default focus outline */
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 123, 255, 0.6); /* Optional: adds a subtle glow */
 }
+
 .theme-switcher {
   position: fixed;
   top: 20px;
@@ -118,7 +119,7 @@ body .modal-content {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    transition: background-color 0.5s, color 2.5s; /* Add transition for smooth theme change (Even though the theme-change cannot be called when using the modal*/
+    transition: background-color 0.23s, color 2.5s; /* Add transition for smooth theme change (Even though the theme-change cannot be called when using the modal*/
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 2rem;
@@ -140,7 +141,7 @@ button {
     font-size: 1rem;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.23s ease;
 }
 
 button:hover {
@@ -148,7 +149,31 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-body.light-theme .modal-content {
-    background-color: var(--background-color-light);
-    color: var(--text-color-light);
+/*
+@keyframes beat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.44); }
+  100% { transform: scale(1); }
 }
+
+@keyframes rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+*/
+@keyframes rotateAndBeat {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.33); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  75% { transform: rotate(270deg) scale(1.55); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.btn-primary:hover i.beat-rotate-on-hover {
+  animation: rotateAndBeat 1.55s infinite;
+}
+/* Doesn't work because transform is not additive!
+.btn-primary:hover i.beat-on-hover {
+  animation: rotate 0.5s ease-in-out forwards, beat 1s infinite;
+}
+*/
