@@ -3,20 +3,29 @@ package com.pibes.dnd.combat.tracker.controller;
 import com.pibes.dnd.combat.tracker.Character;
 import com.pibes.dnd.combat.tracker.Combatant;
 import com.pibes.dnd.combat.tracker.Monster;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class EncounterController {
+
+    @Value("${character.test1}")
+    private String test1;
+
+    @Value("${character.test2}")
+    private String test2;
 
     private List<Character> characters = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<>();
@@ -26,9 +35,11 @@ public class EncounterController {
     @GetMapping("/dnd")
     public String index(Model model) {
         // Add sample characters and monsters to the model
+        characters = loadCharacteres();
         model.addAttribute("characters", characters);
         model.addAttribute("monsters", monsters);
-
+        combatants = Stream.concat(combatants.stream(), characters.stream())
+                .collect(Collectors.toList());
         // Sort entities by initiative in descending order
         combatants.sort((a, b) -> {
             int initiativeA = a.getInitiative();
@@ -40,6 +51,17 @@ public class EncounterController {
         model.addAttribute("combatants", combatants);
 
         return "index";
+    }
+
+    private List<Character> loadCharacteres() {
+        JSONObject char1 = new JSONObject(test1);
+        Character charTest1 = new Character(char1.getString("name"), char1.getInt("ac"),char1.getInt("initiative"), char1.getInt("health"));
+        JSONObject char2 = new JSONObject(test1);
+        Character charTest2 = new Character(char2.getString("name"), char2.getInt("ac"),char2.getInt("initiative"), char2.getInt("health"));
+        ArrayList<Character> loadedChars = new ArrayList<>();
+        loadedChars.add(charTest1);
+        loadedChars.add(charTest2);
+        return loadedChars;
     }
 
     @PostMapping("/addCharacter")
@@ -57,6 +79,31 @@ public class EncounterController {
         combatants.add(monster);
         // Redirect back to the /dnd page
         return "redirect:/dnd";
+    }
+
+    @PostMapping("/changeInitiative")
+    @ResponseBody
+    public ResponseEntity<?> changeInitiative(@RequestParam String combatantId, @RequestParam String amount) {
+        try {
+            // Find the combatant by ID and update its initiative
+            int amt = Integer.parseInt(amount);
+            int combatantID = Integer.parseInt(combatantId);
+            Combatant combatant = findCombatantById(combatantID);
+            if (combatant != null) {
+                combatant.setInitiative(amt);
+                // Create a Map to hold both the new temporal health and a success message
+                Map<String, Object> response = new HashMap<>();
+                response.put("newInitiative", combatant.getInitiative());
+                response.put("message", "Combatant initiative changed successfully.");
+
+                // Return the response Map
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid parameters.");
+        }
     }
 
     @PostMapping("/healCombatant")

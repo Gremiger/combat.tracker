@@ -79,9 +79,15 @@
 <ul id="current-order">
     <li th:each="combatant : ${combatants}" th:id="${combatant.id}">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
-              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+              th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: '">
+        </span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"
-              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
+              th:text="'Monster: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'">
+
+        </span>
+        <span class="currentInitiative" th:text="${combatant.initiative}">)</span>
+        <input class="updatedInit" type="number" name="updatedInit" min="1" placeholder="0">
+        <button onclick="setInitiative(this)">Change Initiative</button>
 
         <!-- Separate elements for max health and temporal health -->
         <span> (Max HP: <span class="max-health" th:text="${combatant.health}"></span>)</span>
@@ -95,6 +101,7 @@
         <button onclick="dmgCombatant(this)" class="btn-medieval-dmgheal dmg">
             <i class="fa fa-gavel"></i>DAMAGE
         </button>
+
     </li>
 </ul>
 

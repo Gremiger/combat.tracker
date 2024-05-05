@@ -138,3 +138,55 @@ function dmgCombatant(button){
         console.error('Error in damaging: ', error.response.data);
     });
 }
+
+function setInitiative(button){
+    var parent = button.parentElement;
+    var combatantID = parent.id;
+    var amount = parent.children.updatedInit.value
+    axios.post('/changeInitiative', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+    .then(function(response) {
+        console.log('Combatant Initiative: ', response.data);
+        // Update the temporal health in the DOM
+        var initiativeElement = parent.querySelector('.currentInitiative');
+        if (initiativeElement) {
+            initiativeElement.innerText = response.data.newInitiative;
+        }
+    })
+    .catch(function(error) {
+        console.error('Error setting initiative: ', error.response.data);
+    });
+}
+
+/**
+* This function is used to damage a combatant in a game.
+* It sends a POST request to the '/dmgCombatant' endpoint with the combatant's ID and the amount of damage.
+* If the request is successful, it updates the combatant's health in the DOM.
+* If the request fails, it logs the error message.
+*
+* @param {Object} button - The button element that triggered the function.
+*/
+function dmgCombatant(button){
+    const parent = button.parentElement;
+    const combatantID = parent.id;
+    const amount = parent.children.dmg_heal.value;
+
+    axios.post('/dmgCombatant', `combatantId=${encodeURIComponent(combatantID)}&amount=${encodeURIComponent(amount)}`, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(response => {
+            console.log('Combatant Damaged: ', response.data);
+            const temporalHealthElement = parent.querySelector('.temporal-health');
+            if (temporalHealthElement) {
+                temporalHealthElement.innerText = response.data.newTemporalHealth;
+            }
+        })
+        .catch(error => {
+            console.error('Error in damaging: ', error.response.data);
+        });
+}

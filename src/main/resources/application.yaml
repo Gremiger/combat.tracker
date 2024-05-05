@@ -1,0 +1,17 @@
+server:
+  port: 8023
+
+character:
+  test1: '{
+      "name": "test1",
+      "ac": "18",
+      "initiative": "0",
+      "health": "56"
+    }'
+
+  test2: '{
+      "name": "test1",
+      "ac": "18",
+      "initiative": "0",
+      "health": "56"
+    }'
