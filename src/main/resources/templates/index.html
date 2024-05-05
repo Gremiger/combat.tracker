@@ -22,7 +22,9 @@
     <img id="theme-icon" th:src="@{images/sun-icon.png}" alt="Change Theme">
 </div>
 
-<button class="btn btn-primary" onclick="openModal('addCharacterModal')"><i class="fas fa-plus beat-on-hover"></i>  Add Character </button>
+<button class="btn-medieval-primary" onclick="openModal('addCharacterModal')">
+    <i class="fas fa-plus beat-rotate-on-hover"></i> Add Character
+</button>
 
 <div class="modal" id="addCharacterModal">
     <div class="modal-content">
@@ -37,13 +39,15 @@
             <input id="charInitiative" min="1" name="initiative" required type="number" placeholder="0" class="form-control"><br><br>
             <label for="charHealth" class="form-label">Max HP:</label>
             <input id="charHealth" min="1" name="health" required type="number" placeholder="0" class="form-control"><br><br>
-            <button type="submit" class="btn btn-primary">Add Character</button>
+            <button type="submit" class="btn-medieval-primary">Add Character</button>
         </form>
     </div>
 </div>
 
 <!-- Button to open the modal -->
-<button class="btn btn-primary" onclick="openModal('addMonsterModal')"><i class="fas fa-plus beat-rotate-on-hover"></i>  Add Monster</button>
+<button class="btn-medieval-primary" onclick="openModal('addMonsterModal')">
+    <i class="fas fa-plus beat-rotate-on-hover"></i>  Add Monster
+</button>
 
 <!-- Modal popup -->
 <div class="modal" id="addMonsterModal">
@@ -59,7 +63,7 @@
             <input id="monsterInitiative" min="1" name="initiative" required type="number" placeholder="0" class="form-control"><br><br>
             <label for="monsterHealth" class="form-label">Max HP:</label>
             <input id="monsterHealth" min="1" name="health" required type="number" placeholder="0" class="form-control"><br><br>
-            <button type="submit" class="btn btn-primary">Add Monster</button>
+            <button type="submit" class="btn-medieval-primary">Add Monster</button>
         </form>
     </div>
 </div>
@@ -85,8 +89,12 @@
 
         <!-- Input and buttons for damaging/healing -->
         <input class="dmg-heal" type="number" name="dmg_heal" min="1" placeholder="0">
-        <button onclick="healCombatant(this)">HEAL</button>
-        <button onclick="dmgCombatant(this)"> DAMAGE</button>
+        <button onclick="healCombatant(this)" class="btn-medieval-dmgheal heal">
+            <i class="fas fa-heart"></i>HEAL
+        </button>
+        <button onclick="dmgCombatant(this)" class="btn-medieval-dmgheal dmg">
+            <i class="fa fa-gavel"></i>DAMAGE
+        </button>
     </li>
 </ul>
 

@@ -2,11 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --background-color-light: #ffffff;
-    --text-color-light: #000000;
+    --background-color-light: #f4f1de; /* un tono beige suave */
+    --text-color-light: #5a5a5a; /* un gris oscuro */
     --background-color-dark: #000000;
     --text-color-dark: #ffffff;
-    --modal-color-light: #fefefe;
+    --modal-color-light: #e8e0cb; /* un beige más claro para el modal */
     --modal-color-dark: #0e0e0e;
 }
 
@@ -62,13 +62,10 @@ body.light-theme {
   color: var(--text-color-light);
 }
 
-/*body.light-theme .form-label{
-    color: var(--text-color-light);
-}*/
 body.light-theme .form-label {
-    color: #444; /* Dark but not too stark */
-    margin-bottom: .5rem; /* Space between label and control */
-    display: block; /* Ensure the label is on its own line */
+    color: #5a5a5a; /* Texto gris oscuro para mayor legibilidad */
+    margin-bottom: .5rem;
+    display: block;
 }
 
 body.light-theme .form-control {
@@ -77,13 +74,13 @@ body.light-theme .form-control {
 }
 
 body.light-theme .form-control::placeholder {
-    color: #a9a9a9; /* Lighter text for placeholder */
+    color: #a9a9a9;
 }
 
 body.light-theme .form-control:focus {
-    border-color: #007bff; /* Highlight focus with a blue border */
-    outline: none; /* Optional: removes the default focus outline */
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 123, 255, 0.6); /* Optional: adds a subtle glow */
+    border-color: #5a3427; /* Un marrón oscuro para el enfoque */
+    outline: none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(90, 52, 39, 0.6);
 }
 
 .theme-switcher {
@@ -126,7 +123,7 @@ body .modal-content {
 }
 
 body.light-theme .modal-content {
-    background-color: var(--background-color-light);
+    background-color: var(--modal-color-light);
     color: var(--text-color-light);
 }
 
@@ -172,8 +169,77 @@ button:hover {
 .btn-primary:hover i.beat-rotate-on-hover {
   animation: rotateAndBeat 1.55s infinite;
 }
-/* Doesn't work because transform is not additive!
-.btn-primary:hover i.beat-on-hover {
-  animation: rotate 0.5s ease-in-out forwards, beat 1s infinite;
+
+.btn-medieval-primary {
+    background-color: #806c55; /* Un color marrón que recuerda al cuero */
+    color: #f4f1de; /* Un beige claro para el texto */
+    border: 2px solid #5a3427; /* Un borde marrón oscuro */
+    padding: 4px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Times New Roman', serif; /* Fuente que da un toque clásico */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 1px 1px 4px #000; /* Sombra sutil para profundidad */
 }
-*/
+
+.btn-medieval-primary:hover, .btn-medieval-primary:focus {
+    background-color: #5a3427; /* Un marrón más oscuro para el estado hover */
+    color: #ffffff; /* Texto blanco para mejor contraste */
+    transform: translateY(-2px); /* Efecto de elevación sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada en hover */
+}
+
+.btn-medieval-primary i {
+    margin-right: 8px;
+}
+
+.btn-medieval-primary:hover i.beat-rotate-on-hover {
+    animation: rotateAndBeat 1.55s infinite;
+}
+
+/* Basic styling for the medieval button */
+.btn-medieval-dmgheal {
+    background-color: #625834; /* Dark brown background */
+    color: #f4f1de; /* Light beige text */
+    border: 2px solid #433c32; /* Dark border for depth */
+    padding: 3px 6px;
+    font-family: 'Times New Roman', serif; /* Medieval font style */
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, background 0.5s ease;
+    position: relative; /* Required for absolute positioning of pseudo-elements */
+    overflow: hidden; /* Keeps pseudo-elements within the button boundaries */
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+}
+
+.btn-medieval-dmgheal i {
+    transition: transform 0.5s ease;
+    margin-right: 5px;
+}
+
+.btn-medieval-dmgheal.heal:hover {
+    background-image: url('https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png'); /* URL to a heart icon image */
+    background-repeat: repeat; /* Repeat the background across the button */
+    background-size: 12px 12px; /* Size of each heart icon */
+    transform: scale(1.05); /* Optional: scale up the button slightly on hover */
+}
+
+.btn-medieval-dmgheal.dmg:hover {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/6662/6662291.png'); /* URL to a damage icon image */
+    background-repeat: repeat; /* Repeat the background across the button */
+    background-size: 12px 12px; /* Size of each heart icon */
+    transform: scale(1.05); /* Optional: scale up the button slightly on hover */
+}
+
+/* Hide the default heart icon when hovering */
+.btn-medieval-dmgheal:hover i {
+    transform: scale(0); /* Scale down to hide */
+}
+
