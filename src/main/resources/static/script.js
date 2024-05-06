@@ -139,6 +139,10 @@ function dmgCombatant(button){
     });
 }
 
+/**
+ * Sets the initiative of a combatant by sending a POST request to the server.
+ * @param {HTMLElement} button - The button element triggering the initiative change.
+ */
 function setInitiative(button){
     var parent = button.parentElement;
     var combatantID = parent.id;
@@ -150,7 +154,7 @@ function setInitiative(button){
         })
     .then(function(response) {
         console.log('Combatant Initiative: ', response.data);
-        // Update the temporal health in the DOM
+        // Update the temporal initiative in the DOM
         var initiativeElement = parent.querySelector('.currentInitiative');
         if (initiativeElement) {
             initiativeElement.innerText = response.data.newInitiative;
@@ -190,3 +194,50 @@ function dmgCombatant(button){
             console.error('Error in damaging: ', error.response.data);
         });
 }
+
+/**
+ * Deletes the row corresponding to a combatant from the UI and sends a POST request to the server to mark the combatant as dead.
+ * @param {HTMLElement} button - The button element triggering the deletion.
+ */
+function deleteRow(button){
+    var parent = button.parentElement;
+    const combatantID = parent.id;
+    axios.post('/deadMan', 'combatantId=' + encodeURIComponent(combatantID), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+    .then(function(response) {
+        console.log('Combatant deleted: ', response.data);
+        parent.remove()
+        // Update the temporal initiative in the DOM
+    })
+    .catch(function(error) {
+        console.error('Error setting initiative: ', error.response.data);
+    });
+}
+
+//function sortList(){
+//   var list = document.getElementById("current-order")
+//   var items = Array.from(document.getElementById("current-order").childNodes).filter(item => !item.data);
+//   var itemsArr = [];
+//   for (var i in items) {
+//       if (items[i].nodeType == 1) { // get rid of the whitespace text nodes
+//           itemsArr.push(items[i]);
+//       }
+//   }
+//
+//   itemsArr.sort(function(a, b) {
+//     return a.innerHTML == b.innerHTML
+//             ? 0
+//             : (a.innerHTML > b.innerHTML ? 1 : -1);
+//   });
+//
+//   for (i = 0; i < itemsArr.length; ++i) {
+//     list.appendChild(itemsArr[i]);
+//   }
+//}
+
+
+//Array.from(document.getElementById("current-order").childNodes).filter(item => !item.data)
+//.querySelector('.currentInitiative').innerText

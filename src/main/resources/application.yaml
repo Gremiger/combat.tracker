@@ -10,7 +10,7 @@ character:
     }'
 
   test2: '{
-      "name": "test1",
+      "name": "test2",
       "ac": "18",
       "initiative": "0",
       "health": "56"
