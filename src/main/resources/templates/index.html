@@ -75,9 +75,16 @@
 <h2>Monsters</h2>
 <p th:text="${monsters}"></p>
 
+<button class="btn-medieval-primary" id="startButton" onclick="toggleCombat()" disabled>
+    Start Combat
+</button>
+<button class="btn-medieval-primary" id="nextButton" onclick="nextTurn()" disabled>
+    Next Turn
+</button>
+
 <h2>Current Order</h2>
 <ul id="current-order">
-    <li th:each="combatant : ${combatants}" th:id="${combatant.id}">
+    <li th:each="combatant, iterStat : ${combatants}" th:id="${combatant.id}" class="combatant">
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)}"
               th:text="'Charact: ' + ${combatant.name} + ' (' + ${combatant.id} + ')' + ' (Initiative: ' + ${combatant.initiative} + ')'"></span>
         <span th:if="${combatant instanceof T(com.pibes.dnd.combat.tracker.Monster)}"

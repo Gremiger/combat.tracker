@@ -150,6 +150,13 @@ body.light-theme .modal-content {
     box-shadow: 1px 1px 4px #000; /* Sombra sutil para profundidad */
 }
 
+.btn-medieval-primary[disabled] {
+    background-color: #b3a18f; /* Un marrón más claro para el estado deshabilitado */
+    color: #f4f1de; /* Texto beige claro */
+    cursor: not-allowed; /* Cursor de no permitido */
+    opacity: 0.5; /* Opacidad reducida */
+}
+
 .btn-medieval-primary:hover, .btn-medieval-primary:focus {
     background-color: #5a3427; /* Un marrón más oscuro para el estado hover */
     color: #ffffff; /* Texto blanco para mejor contraste */
@@ -178,9 +185,9 @@ body.light-theme .modal-content {
     transition: background-color 0.3s ease, background 0.5s ease;
     position: relative; /* Required for absolute positioning of pseudo-elements */
     overflow: hidden; /* Keeps pseudo-elements within the button boundaries */
-    /*display: flex;
-    justify-content: center;
-    align-items: center;*/
+   /* display: inline-flex;
+    align-items: center;
+    */
 }
 
 .btn-medieval-dmgheal i {
@@ -192,14 +199,14 @@ body.light-theme .modal-content {
     background-image: url('https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png'); /* URL to a heart icon image */
     background-repeat: repeat; /* Repeat the background across the button */
     background-size: 12px 12px; /* Size of each heart icon */
-    transform: scale(1.05); /* Optional: scale up the button slightly on hover */
+    transform: scale(1.05);
 }
 
 .btn-medieval-dmgheal.dmg:hover {
     background-image: url('https://cdn-icons-png.flaticon.com/512/6662/6662291.png'); /* URL to a damage icon image */
     background-repeat: repeat; /* Repeat the background across the button */
-    background-size: 12px 12px; /* Size of each heart icon */
-    transform: scale(1.05); /* Optional: scale up the button slightly on hover */
+    background-size: 23px 23px; /* Size of each dmg icon */
+    transform: scale(1.05);
 }
 
 /* Hide the default heart icon when hovering */
@@ -207,3 +214,8 @@ body.light-theme .modal-content {
     transform: scale(0); /* Scale down to hide */
 }
 
+/* Highlight style for the current combatant */
+.combatant.current {
+    background-color: #ffa500; /* Orange background */
+    color: #fff; /* White text */
+}
