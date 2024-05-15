@@ -7,7 +7,7 @@ plugins {
 group = 'com.pibes.dnd'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
 	mavenCentral()
@@ -19,6 +19,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.30' 					// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.30' 							// Lombok
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator' // Actuator
 }
 
 tasks.withType(Test) {
