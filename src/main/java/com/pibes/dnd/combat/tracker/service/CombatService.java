@@ -20,7 +20,6 @@ public class CombatService {
         if (!isCombatStarted) {
             throw new IllegalStateException("Combat has not started yet.");
         }
-        // Lógica para iniciar el turno (puedes agregar más lógica aquí según sea necesario)
         currentTurn = 0;
         return currentTurn;
     }
@@ -33,7 +32,6 @@ public class CombatService {
         if (!isCombatStarted) {
             throw new IllegalStateException("Combat has not started yet.");
         }
-        // Lógica para avanzar al siguiente turno (puedes agregar más lógica aquí según sea necesario)
         currentTurn++;
         return currentTurn;
     }

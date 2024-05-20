@@ -3,6 +3,7 @@ package com.pibes.dnd.combat.tracker.controller;
 import com.pibes.dnd.combat.tracker.Character;
 import com.pibes.dnd.combat.tracker.Combatant;
 import com.pibes.dnd.combat.tracker.Monster;
+import com.pibes.dnd.combat.tracker.service.CombatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,12 @@ public class EncounterController {
 
     private List<Character> characters = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<>();
-
     private List<Combatant> combatants = new ArrayList<>();
+    private final CombatService combatService;
+
+    public EncounterController(CombatService combatService) {
+        this.combatService = combatService;
+    }
 
     @GetMapping("/dnd")
     public String index(Model model) {
@@ -51,11 +56,17 @@ public class EncounterController {
 
     @PostMapping("/addMonster")
     public String addMonster(@RequestParam String name, @RequestParam int ac, @RequestParam int initiative, @RequestParam int health) {
+        // TODO Receive the 'current' combat-turn as a request parameter, to return to the same turn after adding a monster
         Monster monster = new Monster(name, ac, initiative, health);
         monsters.add(monster);
         combatants.add(monster);
-        // Redirect back to the /dnd page
-        return "redirect:/dnd";
+        // If combat is already started, preserve the current turn and redirect back to the /dnd page
+        if (combatService.isCombatStarted()) {
+            return "redirect:/dnd?currentTurn=" + combatService.getCurrentTurn() + "&combatStarted=true";
+        } else {
+            // Redirect back to the /dnd page
+            return "redirect:/dnd";
+        }
     }
 
     @PostMapping("/healCombatant")

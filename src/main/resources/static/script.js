@@ -1,3 +1,7 @@
+// Declare combatStarted globally
+let combatStarted = false;
+let currentTurn = 0;
+
 document.addEventListener("DOMContentLoaded", function() {
         // Listen clicks in all the document
         document.addEventListener('click', function(event) {
@@ -53,6 +57,34 @@ document.addEventListener("DOMContentLoaded", function() {
         // Add event listener to the theme switcher button
         const themeSwitcher = document.querySelector('.theme-switcher');
         themeSwitcher.addEventListener('click', toggleTheme);
+
+        // Function to parse query parameters from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Check if combat is already started based on query parameter
+        const isCombatStartedParam = getQueryParam('combatStarted');
+        if (isCombatStartedParam === 'true') {
+            // Set combatStarted flag to true
+            combatStarted = true;
+            // Get the current turn from query parameter
+            currentTurn = parseInt(getQueryParam('currentTurn'));
+            // Highlight the current combatant
+            highlightCurrentCombatant(false, false);
+            // Enable/disable buttons based on combat state
+            toggleNextButton();
+            let startButton = document.getElementById("startButton");
+            startButton.innerHTML = "Stop Combat";
+        }
+
+        // Check if there are at least two combatants and enable the "Start Combat" button accordingly
+        var combatants = document.querySelectorAll("#current-order li");
+        var startButton = document.getElementById("startButton");
+        if (combatants.length >= 2) {
+            startButton.disabled = false;
+        }
 });
 
 // Function to open a modal
@@ -138,18 +170,6 @@ function dmgCombatant(button){
         console.error('Error in damaging: ', error.response.data);
     });
 }
-// Check if there are at least two combatants and enable the "Start Combat" button accordingly
-window.onload = function() {
-    var combatants = document.querySelectorAll("#current-order li");
-    var startButton = document.getElementById("startButton");
-
-    if (combatants.length >= 2) {
-        startButton.disabled = false;
-    }
-};
-
-let combatStarted = false;
-let currentTurn = 0;
 
 function toggleCombat(){
     let startButton = document.getElementById("startButton");
@@ -159,6 +179,8 @@ function toggleCombat(){
             combatStarted = false;
             axios.post('/combat/stop');
             currentTurn = -1;
+            //Redirect to /dnd
+            window.location.href = "/dnd";
         }
     } else {
         startButton.innerHTML = "Stop Combat";
@@ -189,19 +211,20 @@ function nextTurn() {
 
 
 
-function highlightCurrentCombatant(firstTurn = false) {
+function highlightCurrentCombatant(firstTurn = false, nextTurn = true) {
     // Remove highlight from previously highlighted combatant
     let previousCombatant = document.querySelector('.combatant.current');
     if (previousCombatant) {
         previousCombatant.classList.remove('current');
     }
-
     // Highlight the current combatant
     let combatants = document.querySelectorAll('.combatant');
     if (firstTurn) {
         currentTurn = 0;
-    } else {
+    } else if (nextTurn) {
         currentTurn = (currentTurn + 1) % combatants.length;
+    } else {
+        currentTurn = currentTurn % combatants.length;
     }
     let currentCombatant = combatants[currentTurn];
     currentCombatant.classList.add('current');
