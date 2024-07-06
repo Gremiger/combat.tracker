@@ -1,10 +1,10 @@
 package com.pibes.dnd.combat.tracker.controller;
 
 import com.pibes.dnd.combat.tracker.Character;
+import com.pibes.dnd.combat.tracker.CharacterProperties;
 import com.pibes.dnd.combat.tracker.Combatant;
 import com.pibes.dnd.combat.tracker.Monster;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,51 +16,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class EncounterController {
 
-    @Value("${character.test1}")
-    private String test1;
-
-    @Value("${character.test2}")
-    private String test2;
+    @Autowired
+    private CharacterProperties characterProperties;
 
     private List<Character> characters = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<>();
-
     private List<Combatant> combatants = new ArrayList<>();
 
     @GetMapping("/dnd")
     public String index(Model model) {
-        // Add sample characters and monsters to the model
-        characters = loadCharacteres();
+        if (characters.isEmpty()) {
+            characters = loadCharacters();
+            combatants.addAll(characters);
+        }
+
         model.addAttribute("characters", characters);
         model.addAttribute("monsters", monsters);
-        combatants = new ArrayList<>(characters);
-        // Sort entities by initiative in descending order
-        combatants.sort((a, b) -> {
-            int initiativeA = a.getInitiative();
-            int initiativeB = b.getInitiative();
-            return initiativeB - initiativeA;
-        });
 
-        // Add sorted entities to the model
+        combatants.sort((a, b) -> Integer.compare(b.getInitiative(), a.getInitiative()));
         model.addAttribute("combatants", combatants);
 
         return "index";
     }
 
-    private List<Character> loadCharacteres() {
-        JSONObject char1 = new JSONObject(test1);
-        Character charTest1 = new Character(char1.getString("name"), char1.getInt("ac"),char1.getInt("initiative"), char1.getInt("health"));
-        JSONObject char2 = new JSONObject(test2);
-        Character charTest2 = new Character(char2.getString("name"), char2.getInt("ac"),char2.getInt("initiative"), char2.getInt("health"));
-        ArrayList<Character> loadedChars = new ArrayList<>();
-        loadedChars.add(charTest1);
-        loadedChars.add(charTest2);
+    private List<Character> loadCharacters() {
+        List<Character> loadedChars = new ArrayList<>();
+        characterProperties.getCharacters().forEach((key, charConfig) -> {
+            Character character = new Character(charConfig.getName(), charConfig.getAc(), charConfig.getInitiative(), charConfig.getHealth());
+            loadedChars.add(character);
+        });
         return loadedChars;
     }
 
@@ -77,38 +65,24 @@ public class EncounterController {
         Monster monster = new Monster(name, ac, initiative, health);
         monsters.add(monster);
         combatants.add(monster);
-        // Redirect back to the /dnd page
         return "redirect:/dnd";
     }
 
-    /**
-     * Handles the POST request to change the initiative of a combatant on the server-side.
-     * @param {string} combatantId - The ID of the combatant whose initiative to change.
-     * @param {string} amount - The amount by which to change the combatant's initiative.
-     * @returns {Promise<Response>} A promise containing the server response.
-     */
     @PostMapping("/changeInitiative")
     @ResponseBody
     public ResponseEntity<?> changeInitiative(@RequestParam String combatantId, @RequestParam String amount) {
         try {
-            // Find the combatant by ID and update its initiative
             int amt = Integer.parseInt(amount);
             int combatantID = Integer.parseInt(combatantId);
             Combatant combatant = findCombatantById(combatantID);
             if (combatant != null) {
                 combatant.setInitiative(amt);
                 combatants.replaceAll(actualCombatant -> StringUtils.equals(actualCombatant.getName(), (combatant.getName())) ? combatant : actualCombatant);
-                combatants.sort((a, b) -> {
-                    int initiativeA = a.getInitiative();
-                    int initiativeB = b.getInitiative();
-                    return initiativeB - initiativeA;
-                });
-                // Create a Map to hold both the new temporal health and a success message
+                combatants.sort((a, b) -> Integer.compare(b.getInitiative(), a.getInitiative()));
                 Map<String, Object> response = new HashMap<>();
                 response.put("newInitiative", combatant.getInitiative());
                 response.put("message", "Combatant initiative changed successfully.");
-
-                // Return the response Map
+                response.put("combatants", combatants); // Add this line to include updated combatants
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
@@ -118,22 +92,19 @@ public class EncounterController {
         }
     }
 
+
     @PostMapping("/healCombatant")
     @ResponseBody
     public ResponseEntity<?> healCombatant(@RequestParam String combatantId, @RequestParam String amount) {
         try {
-            // Find the combatant by ID and update its temporal health
             int amt = Integer.parseInt(amount);
             int combatantID = Integer.parseInt(combatantId);
             Combatant combatant = findCombatantById(combatantID);
             if (combatant != null) {
                 combatant.setTemporalHealth(combatant.getTemporalHealth() + amt);
-                // Create a Map to hold both the new temporal health and a success message
                 Map<String, Object> response = new HashMap<>();
                 response.put("newTemporalHealth", combatant.getTemporalHealth());
                 response.put("message", "Combatant healed successfully.");
-
-                // Return the response Map
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
@@ -146,19 +117,15 @@ public class EncounterController {
     @PostMapping("/dmgCombatant")
     @ResponseBody
     public ResponseEntity<?> dmgCombatant(@RequestParam String combatantId, @RequestParam String amount) {
-        try{
-            // Find the combatant by ID and update its temporal health
+        try {
             int amt = Integer.parseInt(amount);
             int combatantID = Integer.parseInt(combatantId);
             Combatant combatant = findCombatantById(combatantID);
             if (combatant != null) {
                 combatant.setTemporalHealth(combatant.getTemporalHealth() - amt);
-                // Create a Map to hold both the new temporal health and a success message
                 Map<String, Object> response = new HashMap<>();
                 response.put("newTemporalHealth", combatant.getTemporalHealth());
                 response.put("message", "Combatant damaged successfully.");
-
-                // Return the response Map
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
@@ -172,14 +139,12 @@ public class EncounterController {
     @ResponseBody
     public ResponseEntity<?> deadMan(@RequestParam String combatantId) {
         try {
-            // Find the combatant by ID and update its initiative
             int combatantID = Integer.parseInt(combatantId);
             Combatant combatant = findCombatantById(combatantID);
             if (combatant != null) {
                 combatants.remove(combatant);
                 Map<String, Object> response = new HashMap<>();
                 response.put("message", "Combatant initiative changed successfully.");
-                // Return the response Map
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
@@ -189,7 +154,6 @@ public class EncounterController {
         }
     }
 
-    // Helper method to find a combatant by ID
     private Combatant findCombatantById(int combatantId) {
         return combatants.stream()
                 .filter(combatant -> combatant.getId() == combatantId)
@@ -197,4 +161,3 @@ public class EncounterController {
                 .orElse(null);
     }
 }
-

@@ -79,6 +79,57 @@ function closeAllModals() {
 }
 
 /**
+ * Updates the combatants list in the DOM based on the updated combatants data from the server.
+ * @param {Array} combatants - The updated combatants list.
+ */
+function updateCombatantsList(combatants) {
+    const combatantsContainer = document.getElementById('combatants-container');
+    combatantsContainer.innerHTML = ''; // Clear existing combatants list
+
+    combatants.forEach(combatant => {
+        const combatantCard = document.createElement('div');
+        combatantCard.id = combatant.id;
+        combatantCard.classList.add('combatant-card');
+
+        const combatantInfo = `
+            <div class="combatant-header">
+                <span class="combatant-name">${combatant.name}</span>
+                <span class="combatant-type">${combatant.type}</span>
+            </div>
+            <div class="combatant-stats">
+                <div class="stat-group">
+                    <div class="stat-label">Initiative</div>
+                    <div class="stat-value currentInitiative">${combatant.initiative}</div>
+                </div>
+                <div class="stat-group">
+                    <div class="stat-label">Max HP</div>
+                    <div class="stat-value max-health">${combatant.health}</div>
+                </div>
+                <div class="stat-group">
+                    <div class="stat-label">Current HP</div>
+                    <div class="stat-value temporal-health">${combatant.temporalHealth}</div>
+                </div>
+            </div>
+            <div class="combatant-actions">
+                <div class="action-row">
+                    <input type="number" class="updatedInit" min="0" placeholder="Init">
+                    <button onclick="setInitiative(this)" class="btn-action btn-change">Change Initiative</button>
+                </div>
+                <div class="action-row">
+                    <input type="number" class="dmg-heal" min="0" placeholder="HP">
+                    <button onclick="healCombatant(this)" class="btn-action btn-heal">HEAL</button>
+                    <button onclick="dmgCombatant(this)" class="btn-action btn-damage">DAMAGE</button>
+                </div>
+                <button onclick="deleteRow(this)" class="btn-action btn-delete">DELETE ROW</button>
+            </div>
+        `;
+        combatantCard.innerHTML = combatantInfo;
+
+        combatantsContainer.appendChild(combatantCard);
+    });
+}
+
+/**
 * This function is used to heal a combatant in a game.
 * It sends a POST request to the '/healCombatant' endpoint with the combatant's ID and the amount to heal.
 * If the request is successful, it updates the combatant's health in the DOM.
@@ -86,10 +137,10 @@ function closeAllModals() {
 *
 * @param {Object} button - The button element that triggered the function.
 */
-function healCombatant(button){
-    var parent = button.parentElement;
+function healCombatant(button) {
+    var parent = button.closest('.combatant-card');
     var combatantID = parent.id;
-    var amount = parent.children.dmg_heal.value
+    var amount = parent.querySelector('.dmg-heal').value;
     console.log('healing combatant ' + combatantID + " by: " + amount);
     axios.post('/healCombatant', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
             headers: {
@@ -98,7 +149,6 @@ function healCombatant(button){
         })
     .then(function(response) {
         console.log('Combatant Healed: ', response.data);
-        // Update the temporal health in the DOM
         var temporalHealthElement = parent.querySelector('.temporal-health');
         if (temporalHealthElement) {
             temporalHealthElement.innerText = response.data.newTemporalHealth;
@@ -117,10 +167,10 @@ function healCombatant(button){
 *
 * @param {Object} button - The button element that triggered the function.
 */
-function dmgCombatant(button){
-    const parent = button.parentElement;
+function dmgCombatant(button) {
+    const parent = button.closest('.combatant-card');
     const combatantID = parent.id;
-    const amount = parent.children.dmg_heal.value;
+    const amount = parent.querySelector('.dmg-heal').value;
 
     axios.post('/dmgCombatant', `combatantId=${encodeURIComponent(combatantID)}&amount=${encodeURIComponent(amount)}`, {
         headers: {
@@ -139,14 +189,15 @@ function dmgCombatant(button){
     });
 }
 
+
 /**
  * Sets the initiative of a combatant by sending a POST request to the server.
  * @param {HTMLElement} button - The button element triggering the initiative change.
  */
-function setInitiative(button){
-    var parent = button.parentElement;
+function setInitiative(button) {
+    var parent = button.closest('.combatant-card');
     var combatantID = parent.id;
-    var amount = parent.children.updatedInit.value
+    var amount = parent.querySelector('.updatedInit').value;
     axios.post('/changeInitiative', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -154,11 +205,11 @@ function setInitiative(button){
         })
     .then(function(response) {
         console.log('Combatant Initiative: ', response.data);
-        // Update the temporal initiative in the DOM
         var initiativeElement = parent.querySelector('.currentInitiative');
         if (initiativeElement) {
             initiativeElement.innerText = response.data.newInitiative;
         }
+        updateCombatantsList(response.data.combatants);
     })
     .catch(function(error) {
         console.error('Error setting initiative: ', error.response.data);
@@ -166,41 +217,11 @@ function setInitiative(button){
 }
 
 /**
-* This function is used to damage a combatant in a game.
-* It sends a POST request to the '/dmgCombatant' endpoint with the combatant's ID and the amount of damage.
-* If the request is successful, it updates the combatant's health in the DOM.
-* If the request fails, it logs the error message.
-*
-* @param {Object} button - The button element that triggered the function.
-*/
-function dmgCombatant(button){
-    const parent = button.parentElement;
-    const combatantID = parent.id;
-    const amount = parent.children.dmg_heal.value;
-
-    axios.post('/dmgCombatant', `combatantId=${encodeURIComponent(combatantID)}&amount=${encodeURIComponent(amount)}`, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        .then(response => {
-            console.log('Combatant Damaged: ', response.data);
-            const temporalHealthElement = parent.querySelector('.temporal-health');
-            if (temporalHealthElement) {
-                temporalHealthElement.innerText = response.data.newTemporalHealth;
-            }
-        })
-        .catch(error => {
-            console.error('Error in damaging: ', error.response.data);
-        });
-}
-
-/**
  * Deletes the row corresponding to a combatant from the UI and sends a POST request to the server to mark the combatant as dead.
  * @param {HTMLElement} button - The button element triggering the deletion.
  */
-function deleteRow(button){
-    var parent = button.parentElement;
+function deleteRow(button) {
+    var parent = button.closest('.combatant-card');
     const combatantID = parent.id;
     axios.post('/deadMan', 'combatantId=' + encodeURIComponent(combatantID), {
             headers: {
@@ -209,35 +230,15 @@ function deleteRow(button){
         })
     .then(function(response) {
         console.log('Combatant deleted: ', response.data);
-        parent.remove()
-        // Update the temporal initiative in the DOM
+        parent.remove();
     })
     .catch(function(error) {
         console.error('Error setting initiative: ', error.response.data);
     });
 }
 
-//function sortList(){
-//   var list = document.getElementById("current-order")
-//   var items = Array.from(document.getElementById("current-order").childNodes).filter(item => !item.data);
-//   var itemsArr = [];
-//   for (var i in items) {
-//       if (items[i].nodeType == 1) { // get rid of the whitespace text nodes
-//           itemsArr.push(items[i]);
-//       }
-//   }
-//
-//   itemsArr.sort(function(a, b) {
-//     return a.innerHTML == b.innerHTML
-//             ? 0
-//             : (a.innerHTML > b.innerHTML ? 1 : -1);
-//   });
-//
-//   for (i = 0; i < itemsArr.length; ++i) {
-//     list.appendChild(itemsArr[i]);
-//   }
-//}
-
-
-//Array.from(document.getElementById("current-order").childNodes).filter(item => !item.data)
-//.querySelector('.currentInitiative').innerText
+// Make functions global
+window.healCombatant = healCombatant;
+window.dmgCombatant = dmgCombatant;
+window.setInitiative = setInitiative;
+window.deleteRow = deleteRow;
