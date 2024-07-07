@@ -57,6 +57,7 @@ public class EncounterController {
     @PostMapping("/addMonster")
     public String addMonster(@RequestParam String name, @RequestParam int ac, @RequestParam int initiative, @RequestParam int health) {
         // TODO Receive the 'current' combat-turn as a request parameter, to return to the same turn after adding a monster
+        // What is better, to have the current combat turn, and calculate if it's before or after the monster's turn, or to have the combatant ID and "find" his turn?
         Monster monster = new Monster(name, ac, initiative, health);
         monsters.add(monster);
         combatants.add(monster);

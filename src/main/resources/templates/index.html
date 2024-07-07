@@ -55,6 +55,7 @@
         <span onclick="closeModal('addMonsterModal')" style="float: right; cursor: pointer;">&times;</span>
         <h2>Add Monster</h2>
         <form action="/addMonster" id="addMonsterForm" method="post">
+            <input type="hidden" id="currentTurnId" name="currentTurnId" value="">
             <label for="monsterName" class="form-label">Name:</label>
             <input id="monsterName" name="name" required type="text" class="form-control"><br><br>
             <label for="monsterAC" class="form-label">AC:</label>

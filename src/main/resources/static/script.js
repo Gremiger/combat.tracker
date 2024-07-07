@@ -90,6 +90,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // Function to open a modal
 function openModal(modalName) {
     document.getElementById(modalName).style.display = "block";
+    // Set the current turn ID in the hidden input
+    let combatants = document.querySelectorAll('.combatant');
+    let currentCombatant = combatants[currentTurn];
+    document.getElementById('currentTurnId').value = currentCombatant.id;
 }
 
 // Function to close a modal
