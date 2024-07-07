@@ -67,6 +67,7 @@
     <h2>Characters</h2>
     <div class="characters-list">
         <div th:each="character : ${characters}" class="character-item">
+            <button th:onclick="'addToCombat(\'' + ${character.id} + '\', \'character\')'" class="btn-add-to-combat">⚔️ To Combat ⚔️</button>
             <span class="character-name" th:text="${character.name}"></span>
             <span class="character-stats">
             AC: <span th:text="${character.ac}"></span>,
@@ -91,10 +92,10 @@
 
     <h2>Current Order</h2>
     <div class="current-order" id="combatants-container">
-        <div class="combatant-card" th:each="combatant : ${combatants}" th:id="${combatant.id}">
+        <div class="combatant-card" th:each="combatant, iterStat : ${combatants}" th:id="${combatant.id}" th:data-initiative="${combatant.initiative}">
+            <button class="delete-btn" onclick="deleteRow(this)">✕</button>
             <div class="combatant-header">
                 <span class="combatant-name" th:text="${combatant.name}"></span>
-                <span class="combatant-type" th:text="${combatant instanceof T(com.pibes.dnd.combat.tracker.Character)} ? 'Character' : 'Monster'"></span>
             </div>
             <div class="combatant-stats">
                 <div class="stat-group">
@@ -113,15 +114,16 @@
             <div class="combatant-actions">
                 <div class="action-row">
                     <input type="number" class="updatedInit" min="0" placeholder="Init">
-                    <button onclick="setInitiative(this)" class="btn-action btn-change">Change Initiative</button>
+                    <button onclick="setInitiative(this)" class="btn-action btn-change">⚡ Change Initiative</button>
                 </div>
                 <div class="action-row">
                     <input type="number" class="dmg-heal" min="0" placeholder="HP">
-                    <button onclick="healCombatant(this)" class="btn-action btn-heal">HEAL</button>
-                    <button onclick="dmgCombatant(this)" class="btn-action btn-damage">DAMAGE</button>
+                    <button onclick="healCombatant(this)" class="btn-action btn-heal">🩹 HEAL</button>
+                    <button onclick="dmgCombatant(this)" class="btn-action btn-damage">👊🏼 DAMAGE</button>
                 </div>
-                <button onclick="deleteRow(this)" class="btn-action btn-delete">DELETE ROW</button>
             </div>
+            <button class="end-turn-btn" onclick="endTurn(this)">⏳ End Turn</button>
+            <button class="revive-btn" onclick="reviveCombatant(this)" style="display: none;">⚰️ Revive</button>
         </div>
     </div>
 </div>

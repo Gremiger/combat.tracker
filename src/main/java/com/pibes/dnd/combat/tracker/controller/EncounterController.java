@@ -68,6 +68,43 @@ public class EncounterController {
         return "redirect:/dnd";
     }
 
+    @PostMapping("/addToCombat")
+    @ResponseBody
+    public ResponseEntity<?> addToCombat(@RequestParam String id, @RequestParam String type) {
+        try {
+            int combatantId = Integer.parseInt(id);
+            Combatant combatant = null;
+
+            if ("character".equals(type)) {
+                combatant = characters.stream()
+                        .filter(c -> c.getId() == combatantId)
+                        .findFirst()
+                        .orElse(null);
+            } else if ("monster".equals(type)) {
+                combatant = monsters.stream()
+                        .filter(m -> m.getId() == combatantId)
+                        .findFirst()
+                        .orElse(null);
+            }
+
+            if (combatant != null && !combatants.contains(combatant)) {
+                combatants.add(combatant);
+                combatants.sort((a, b) -> Integer.compare(b.getInitiative(), a.getInitiative()));
+
+                Map<String, Object> response = new HashMap<>();
+                response.put("message", "Combatant added to combat successfully.");
+                response.put("combatants", combatants);
+                return ResponseEntity.ok(response);
+            } else if (combatant != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Combatant already in combat.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Combatant not found.");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid parameters.");
+        }
+    }
+
     @PostMapping("/changeInitiative")
     @ResponseBody
     public ResponseEntity<?> changeInitiative(@RequestParam String combatantId, @RequestParam String amount) {

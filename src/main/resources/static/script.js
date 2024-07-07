@@ -79,6 +79,64 @@ function closeAllModals() {
 }
 
 /**
+ * Adds a character or monster to the combat.
+ * @param {string} id - The ID of the character or monster.
+ * @param {string} type - The type of combatant ('character' or 'monster').
+ */
+function addToCombat(id, type) {
+    axios.post('/addToCombat', `id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .then(response => {
+        console.log('Combatant added to combat: ', response.data);
+        updateCombatantsList(response.data.combatants);
+    })
+    .catch(error => {
+        console.error('Error adding combatant to combat: ', error.response.data);
+    });
+}
+
+// Make the new function global
+window.addToCombat = addToCombat;
+
+let currentTurnIndex = 0;
+
+function initializeTurnOrder() {
+    const combatants = Array.from(document.querySelectorAll('.combatant-card'));
+    combatants.sort((a, b) => parseInt(b.dataset.initiative) - parseInt(a.dataset.initiative));
+
+    combatants.forEach((combatant, index) => {
+        document.getElementById('combatants-container').appendChild(combatant);
+    });
+
+    highlightCurrentTurn();
+}
+
+function highlightCurrentTurn() {
+    const combatants = document.querySelectorAll('.combatant-card');
+    combatants.forEach((combatant, index) => {
+        if (index === currentTurnIndex) {
+            combatant.classList.add('active-turn');
+            combatant.querySelector('.end-turn-btn').style.display = 'block';
+        } else {
+            combatant.classList.remove('active-turn');
+            combatant.querySelector('.end-turn-btn').style.display = 'none';
+        }
+    });
+}
+
+function endTurn(button) {
+    const combatants = document.querySelectorAll('.combatant-card');
+    currentTurnIndex = (currentTurnIndex + 1) % combatants.length;
+    highlightCurrentTurn();
+}
+
+// Call initializeTurnOrder when the page loads
+document.addEventListener('DOMContentLoaded', initializeTurnOrder);
+
+/**
  * Updates the combatants list in the DOM based on the updated combatants data from the server.
  * @param {Array} combatants - The updated combatants list.
  */
@@ -92,9 +150,9 @@ function updateCombatantsList(combatants) {
         combatantCard.classList.add('combatant-card');
 
         const combatantInfo = `
+            <button class="delete-btn" onclick="deleteRow(this)">✕</button>
             <div class="combatant-header">
                 <span class="combatant-name">${combatant.name}</span>
-                <span class="combatant-type">${combatant.type}</span>
             </div>
             <div class="combatant-stats">
                 <div class="stat-group">
@@ -113,20 +171,33 @@ function updateCombatantsList(combatants) {
             <div class="combatant-actions">
                 <div class="action-row">
                     <input type="number" class="updatedInit" min="0" placeholder="Init">
-                    <button onclick="setInitiative(this)" class="btn-action btn-change">Change Initiative</button>
+                    <button onclick="setInitiative(this)" class="btn-action btn-change">⚡ Change Initiative</button>
                 </div>
                 <div class="action-row">
                     <input type="number" class="dmg-heal" min="0" placeholder="HP">
-                    <button onclick="healCombatant(this)" class="btn-action btn-heal">HEAL</button>
-                    <button onclick="dmgCombatant(this)" class="btn-action btn-damage">DAMAGE</button>
+                    <button onclick="healCombatant(this)" class="btn-action btn-heal">🩹 HEAL</button>
+                    <button onclick="dmgCombatant(this)" class="btn-action btn-damage">👊🏼 DAMAGE</button>
                 </div>
-                <button onclick="deleteRow(this)" class="btn-action btn-delete">DELETE ROW</button>
+                <button class="revive-btn" onclick="reviveCombatant(this)" style="display: none;">⚰️ Revive</button>
             </div>
         `;
         combatantCard.innerHTML = combatantInfo;
 
         combatantsContainer.appendChild(combatantCard);
     });
+
+    const combatantCards = document.querySelectorAll('.combatant-card');
+    combatantCards.forEach(card => {
+        if (!card.querySelector('.end-turn-btn')) {
+            const endTurnBtn = document.createElement('button');
+            endTurnBtn.className = 'end-turn-btn';
+            endTurnBtn.textContent = '⏳ End Turn';
+            endTurnBtn.onclick = function() { endTurn(this); };
+            card.appendChild(endTurnBtn);
+        }
+    });
+
+    initializeTurnOrder();
 }
 
 /**
@@ -138,23 +209,20 @@ function updateCombatantsList(combatants) {
 * @param {Object} button - The button element that triggered the function.
 */
 function healCombatant(button) {
-    var parent = button.closest('.combatant-card');
-    var combatantID = parent.id;
-    var amount = parent.querySelector('.dmg-heal').value;
-    console.log('healing combatant ' + combatantID + " by: " + amount);
-    axios.post('/healCombatant', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-    .then(function(response) {
-        console.log('Combatant Healed: ', response.data);
-        var temporalHealthElement = parent.querySelector('.temporal-health');
-        if (temporalHealthElement) {
-            temporalHealthElement.innerText = response.data.newTemporalHealth;
+    const parent = button.closest('.combatant-card');
+    const combatantID = parent.id;
+    const amount = parent.querySelector('.dmg-heal').value;
+
+    axios.post('/healCombatant', `combatantId=${encodeURIComponent(combatantID)}&amount=${encodeURIComponent(amount)}`, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    .catch(function(error) {
+    .then(response => {
+        console.log('Combatant Healed: ', response.data);
+        updateCombatantHealth(button, response.data.newTemporalHealth);
+    })
+    .catch(error => {
         console.error('Error in healing: ', error.response.data);
     });
 }
@@ -179,16 +247,62 @@ function dmgCombatant(button) {
     })
     .then(response => {
         console.log('Combatant Damaged: ', response.data);
-        const temporalHealthElement = parent.querySelector('.temporal-health');
-        if (temporalHealthElement) {
-            temporalHealthElement.innerText = response.data.newTemporalHealth;
-        }
+        updateCombatantHealth(button, response.data.newTemporalHealth);
     })
     .catch(error => {
         console.error('Error in damaging: ', error.response.data);
     });
 }
 
+function updateCombatantHealth(button, newHealth) {
+    const parent = button.closest('.combatant-card');
+    const healthElement = parent.querySelector('.temporal-health');
+    const maxHealth = parseInt(parent.querySelector('.max-health').innerText);
+
+    healthElement.innerText = newHealth;
+
+    if (newHealth <= 0) {
+        markAsDead(parent);
+    } else if (parent.classList.contains('dead-character')) {
+        reviveCombatant(parent.querySelector('.revive-btn'));
+    }
+}
+
+function markAsDead(combatantCard) {
+    combatantCard.classList.add('dead-character');
+    combatantCard.querySelector('.delete-btn').style.display = 'none';
+    combatantCard.querySelector('.revive-btn').style.display = 'block';
+
+    // Remove from turn order if it's the current turn
+    if (combatantCard.classList.contains('active-turn')) {
+        endTurn(combatantCard.querySelector('.end-turn-btn'));
+    }
+}
+
+function reviveCombatant(button) {
+    const parent = button.closest('.combatant-card');
+    parent.classList.remove('dead-character');
+    parent.querySelector('.delete-btn').style.display = 'block';
+    button.style.display = 'none';
+
+    // Set health to 1
+    const healthElement = parent.querySelector('.temporal-health');
+    healthElement.innerText = '1';
+
+    // Update server-side data
+    const combatantId = parent.id;
+    axios.post('/reviveCombatant', `combatantId=${encodeURIComponent(combatantId)}`, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .then(response => {
+        console.log('Combatant revived: ', response.data);
+    })
+    .catch(error => {
+        console.error('Error reviving combatant: ', error.response.data);
+    });
+}
 
 /**
  * Sets the initiative of a combatant by sending a POST request to the server.
@@ -231,9 +345,10 @@ function deleteRow(button) {
     .then(function(response) {
         console.log('Combatant deleted: ', response.data);
         parent.remove();
+        initializeTurnOrder(); // Reinitialize turn order after deletion
     })
     .catch(function(error) {
-        console.error('Error setting initiative: ', error.response.data);
+        console.error('Error deleting combatant: ', error.response.data);
     });
 }
 
