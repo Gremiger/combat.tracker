@@ -1,6 +1,5 @@
 package com.pibes.dnd.combat.tracker;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Character extends Combatant {
 
     public Character(String name, int ac, int initiative, int health) {
-        super(name, ac, initiative, health);
+        super(name, ac, initiative, health, "C");
     }
 
     @Override
