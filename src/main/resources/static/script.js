@@ -321,6 +321,17 @@ function setInitiative(button) {
 function deleteRow(button) {
     var parent = button.closest('.combatant-card');
     const combatantID = parent.id;
+
+    // Determine if the combatant is a monster or character
+    const isMonster = parent.classList.contains('monster-combatant');
+    const combatantType = isMonster ? 'monster' : 'character';
+
+    // Display confirmation dialog
+    const confirmMessage = `Are you sure that you want to delete the ${combatantType}?`;
+    if (!confirm(confirmMessage)) {
+        return; // If user cancels, do nothing
+    }
+
     axios.post('/deadMan', 'combatantId=' + encodeURIComponent(combatantID), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -82,16 +82,16 @@
         <div th:each="monster : ${monsters}" class="monster-item">
             <span class="monster-name" th:text="${monster.name}"></span>
             <span class="monster-stats">
-            AC: <span th:text="${monster.ac}"></span>,
-            Initiative: <span th:text="${monster.initiative}"></span>,
-            Health: <span th:text="${monster.health}"></span> / <span th:text="${monster.temporalHealth}"></span>
-        </span>
+                AC: <span th:text="${monster.ac}"></span>,
+                Initiative: <span th:text="${monster.initiative}"></span>,
+                Health: <span th:text="${monster.health}"></span> / <span th:text="${monster.temporalHealth}"></span>
+            </span>
         </div>
     </div>
 
     <h2>Current Order</h2>
     <div class="current-order" id="combatants-container">
-        <div class="combatant-card" th:each="combatant, iterStat : ${combatants}" th:id="${combatant.id}" th:data-initiative="${combatant.initiative}">
+        <div class="combatant-card" th:each="combatant, iterStat : ${combatants}" th:id="${combatant.id}" th:data-initiative="${combatant.initiative}" th:class="${'combatant-card ' + (combatant.type == 'M' ? 'monster-combatant' : 'character-combatant')}">
             <button class="delete-btn" onclick="deleteRow(this)">✕</button>
             <div class="combatant-header">
                 <span class="combatant-name" th:text="${combatant.name}"></span>

@@ -15,14 +15,16 @@ public class Combatant {
     private int initiative;
     private int health;
     private int temporalHealth;
+    private String type;
 
     // Constructor without ID
-    public Combatant(String name, int ac, int initiative, int health) {
+    public Combatant(String name, int ac, int initiative, int health, String type) {
         this.id = nextId++;
         this.name = name;
         this.ac = ac;
         this.initiative = initiative;
         this.health = health;
         this.temporalHealth = health;
+        this.type = type;
     }
 }

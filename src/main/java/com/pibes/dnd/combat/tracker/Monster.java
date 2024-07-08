@@ -1,6 +1,5 @@
 package com.pibes.dnd.combat.tracker;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ public class Monster extends Combatant {
 
 
     public Monster(String name, int ac, int initiative, int health) {
-        super(name, ac, initiative, health);
+        super(name, ac, initiative, health, "M");
     }
 
 

@@ -127,6 +127,22 @@ body.dark-theme {
     position: relative;
 }
 
+.monster-combatant {
+    border-left: 5px solid #8B0000; /* Dark red border for monsters */
+}
+
+.character-combatant {
+    border-left: 5px solid #006400; /* Dark green border for characters */
+}
+
+.combatant-card::before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    position: relative;
+}
+
 .combatant-header {
     display: flex;
     justify-content: space-between;
@@ -237,6 +253,15 @@ body.dark-theme {
     box-shadow: 0 0 15px 10px #996633;
     position: relative;
 }
+
+.active-turn.monster-combatant {
+    box-shadow: 0 0 15px 10px #8B0000;
+}
+
+.active-turn.character-combatant {
+    box-shadow: 0 0 15px 10px #006400;
+}
+
 .active-turn::before {
     content: "Current Turn";
     position: absolute;
@@ -421,6 +446,22 @@ body.dark-theme .modal-content span {
 
 body.dark-theme .modal-content span:hover {
     color: #806c55;
+}
+
+body.dark-theme .monster-combatant {
+    border-left-color: #FF4500;
+}
+
+body.dark-theme .character-combatant {
+    border-left-color: #32CD32;
+}
+
+body.dark-theme .active-turn.monster-combatant {
+    box-shadow: 0 0 15px 10px #FF4500;
+}
+
+body.dark-theme .active-turn.character-combatant {
+    box-shadow: 0 0 15px 10px #32CD32;
 }
 
 /* Responsive design */
