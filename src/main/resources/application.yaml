@@ -1,0 +1,42 @@
+server:
+  port: 8023
+
+character:
+  characters:
+    Rivs:
+      name: Rivs
+      ac: 12
+      initiative: 0
+      health: 26
+    Zefiro:
+      name: Zefiro
+      ac: 15
+      initiative: 0
+      health: 56
+    "Null":
+      name: "Null"
+      ac: 13
+      initiative: 0
+      health: 26
+    Tarion:
+      name: Tarion
+      ac: 15
+      initiative: 0
+      health: 36
+    Dr Gemini:
+      name: Dr Gemini
+      ac: 19
+      initiative: 0
+      health: 42
+    Orculo:
+      name: Orculo
+      ac: 19
+      initiative: 0
+      health: 56
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+    hibernate: ERROR
