@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --background-color-light: #f4f1de;
+    --text-color-light: #5a5a5a;
+    --background-color-dark: #000000;
+    --text-color-dark: #ffffff;
+    --modal-color-light: #e8e0cb;
+    --modal-color-dark: #0e0e0e;
+}

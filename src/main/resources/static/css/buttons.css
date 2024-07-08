@@ -1,0 +1,125 @@
+.btn-add-to-combat {
+    background-color: #806c55;
+    color: #f4f1de;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add-to-combat:hover {
+    background-color: #5a3427;
+}
+
+.btn-group {
+    margin-bottom: 20px;
+}
+
+.btn-medieval {
+    background-color: #806c55;
+    color: #f4f1de;
+    border: 2px solid #5a3427;
+    padding: 10px 15px;
+    margin-right: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-medieval:hover {
+    background-color: #5a3427;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-change {
+    background-color: #806c55;
+    color: #f4f1de;
+}
+
+.btn-heal {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-damage {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #806c55;
+    color: #fff;
+    border: none;
+    border-radius: 30%;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-weight: bolder;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.dead-character .delete-btn {
+    display: none;
+}
+
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+.end-turn-btn {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #f4f1de;
+    border: 1px solid #2e7d32;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.end-turn-btn:hover {
+    background-color: #45a049;
+}
+
+.revive-btn {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: #f4f1de;
+    border: 1px solid #2980b9;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: 'Times New Roman', serif;
+    transition: background-color 0.3s;
+}
+
+.revive-btn:hover {
+    background-color: #2980b9;
+}
