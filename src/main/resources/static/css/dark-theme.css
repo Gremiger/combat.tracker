@@ -1,0 +1,54 @@
+body.dark-theme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+body.dark-theme .modal-content {
+    background-color: #0e0e0e;
+    color: #f4f1de;
+    border-color: #806c55;
+}
+
+body.dark-theme .modal-content h2 {
+    color: #f4f1de;
+}
+
+body.dark-theme .modal-content input[type="text"],
+body.dark-theme .modal-content input[type="number"] {
+    background-color: #1a1a1a;
+    color: #f4f1de;
+    border-color: #806c55;
+}
+
+body.dark-theme .modal-content button[type="submit"] {
+    background-color: #806c55;
+    color: #f4f1de;
+}
+
+body.dark-theme .modal-content button[type="submit"]:hover {
+    background-color: #5a3427;
+}
+
+body.dark-theme .modal-content span {
+    color: #f4f1de;
+}
+
+body.dark-theme .modal-content span:hover {
+    color: #806c55;
+}
+
+body.dark-theme .monster-combatant {
+    border-left-color: #FF4500;
+}
+
+body.dark-theme .character-combatant {
+    border-left-color: #32CD32;
+}
+
+body.dark-theme .active-turn.monster-combatant {
+    box-shadow: 0 0 15px 10px #FF4500;
+}
+
+body.dark-theme .active-turn.character-combatant {
+    box-shadow: 0 0 15px 10px #32CD32;
+}

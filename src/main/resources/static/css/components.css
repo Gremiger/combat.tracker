@@ -1,0 +1,154 @@
+.character-item, .monster-item {
+    background-color: #d0c0a0;
+    border: 1px solid #806c55;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.character-name, .monster-name {
+    font-weight: bold;
+    color: #5a3427;
+    font-size: 1.1em;
+}
+
+.character-stats, .monster-stats {
+    color: #806c55;
+    font-size: 0.9em;
+}
+
+.current-order {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.combatant-card {
+    background-color: #d0c0a0;
+    border: 2px solid #806c55;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.monster-combatant {
+    border-left: 5px solid #8B0000;
+}
+
+.character-combatant {
+    border-left: 5px solid #006400;
+}
+
+.combatant-card::before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    position: relative;
+}
+
+.combatant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #806c55;
+    padding-bottom: 5px;
+}
+
+.combatant-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #5a3427;
+}
+
+.combatant-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.monsters-list > div:only-child {
+    text-align: center;
+    color: #806c55;
+    font-style: italic;
+}
+
+.stat-group {
+    text-align: center;
+    background-color: #e8e0cb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.stat-label {
+    font-size: 0.8em;
+    color: #806c55;
+}
+
+.stat-value {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #5a3427;
+}
+
+.combatant-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-row {
+    display: flex;
+    gap: 5px;
+}
+
+.active-turn {
+    box-shadow: 0 0 15px 10px #996633;
+    position: relative;
+}
+
+.active-turn.monster-combatant {
+    box-shadow: 0 0 15px 10px #8B0000;
+}
+
+.active-turn.character-combatant {
+    box-shadow: 0 0 15px 10px #006400;
+}
+
+.active-turn::before {
+    content: "Current Turn";
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #996633;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border-radius: 0px 0px 5px 5px;
+    border: 1px solid #5a3427;
+    font-family: "Gill Sans", sans-serif;
+}
+
+.dead-character {
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+#theme-icon {
+    filter: '';
+    width: 35px;
+    height: 35px;
+}

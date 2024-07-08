@@ -1,0 +1,25 @@
+@media (max-width: 768px) {
+    .current-order {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-medieval {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .character-item, .monster-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .character-stats, .monster-stats {
+        margin-top: 5px;
+    }
+}

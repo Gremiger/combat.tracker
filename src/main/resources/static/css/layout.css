@@ -1,0 +1,27 @@
+body {
+    font-family: 'Times New Roman', serif;
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    margin: 0;
+    padding: 20px;
+}
+
+.encounter-tracker {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.characters-list, .monsters-list {
+    background-color: #e8e0cb;
+    border: 1px solid #806c55;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #806c55;
+    border-radius: 3px;
+}
