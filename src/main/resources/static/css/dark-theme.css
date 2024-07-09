@@ -52,3 +52,22 @@ body.dark-theme .active-turn.monster-combatant {
 body.dark-theme .active-turn.character-combatant {
     box-shadow: 0 0 15px 10px #32CD32;
 }
+
+body.dark-theme .death-save-label {
+    color: #f4f1de;
+}
+
+body.dark-theme .save-checkbox,
+body.dark-theme .fail-checkbox {
+    border-color: #f4f1de;
+}
+
+body.dark-theme .save-checkbox:checked {
+    background-color: #32CD32;
+    border-color: #32CD32;
+}
+
+body.dark-theme .fail-checkbox:checked {
+    background-color: #FF4500;
+    border-color: #FF4500;
+}

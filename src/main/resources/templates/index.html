@@ -121,6 +121,41 @@
                     <button onclick="dmgCombatant(this)" class="btn-action btn-damage">👊🏼 DAMAGE</button>
                 </div>
             </div>
+            <div class="death-save-counter" style="display: none;">
+                <div class="death-save-header">
+                    <span class="death-save-label">DEATH SAVES</span>
+                </div>
+                <div class="death-save-boxes">
+                    <div class="fail-section">
+                        <div class="fail-boxes">
+                            <label for="fail1">
+                                <input type="checkbox" id="fail1" class="fail-checkbox">
+                            </label>
+                            <label for="fail2">
+                                <input type="checkbox" id="fail2" class="fail-checkbox">
+                            </label>
+                            <label for="fail3">
+                                <input type="checkbox" id="fail3" class="fail-checkbox">
+                            </label>
+                        </div>
+                        <span class="fail-text">FAIL</span>
+                    </div>
+                    <div class="save-section">
+                        <div class="save-boxes">
+                            <label for="save1">
+                                <input type="checkbox" id="save1" class="save-checkbox">
+                            </label>
+                            <label for="save2">
+                                <input type="checkbox" id="save2" class="save-checkbox">
+                            </label>
+                            <label for="save3">
+                                <input type="checkbox" id="save3" class="save-checkbox">
+                            </label>
+                        </div>
+                        <span class="success-text">SUCCESS</span>
+                    </div>
+                </div>
+            </div>
             <button class="end-turn-btn" onclick="endTurn(this)">⏳ End Turn</button>
             <button class="revive-btn" onclick="reviveCombatant(this)" style="display: none;">⚰️ Revive</button>
         </div>
