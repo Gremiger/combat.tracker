@@ -63,6 +63,60 @@
         </div>
     </div>
 
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettingsModal()">&times;</span>
+            <h2>Add States</h2>
+            <div class="state-list">
+                <div class="state-group">
+                    <h3>DND States</h3>
+                    <input type="checkbox" id="blinded" class="state-checkbox">
+                    <label for="blinded">Blinded</label><br>
+                    <input type="checkbox" id="charmed" class="state-checkbox">
+                    <label for="charmed">Charmed</label><br>
+                    <input type="checkbox" id="deafened" class="state-checkbox">
+                    <label for="deafened">Deafened</label><br>
+                    <input type="checkbox" id="frightened" class="state-checkbox">
+                    <label for="frightened">Frightened</label><br>
+                    <input type="checkbox" id="grappled" class="state-checkbox">
+                    <label for="grappled">Grappled</label><br>
+                    <input type="checkbox" id="incapacitated" class="state-checkbox">
+                    <label for="incapacitated">Incapacitated</label><br>
+                    <input type="checkbox" id="invisible" class="state-checkbox">
+                    <label for="invisible">Invisible</label><br>
+                    <input type="checkbox" id="paralyzed" class="state-checkbox">
+                    <label for="paralyzed">Paralyzed</label><br>
+                    <input type="checkbox" id="petrified" class="state-checkbox">
+                    <label for="petrified">Petrified</label><br>
+                    <input type="checkbox" id="poisoned" class="state-checkbox">
+                    <label for="poisoned">Poisoned</label><br>
+                    <input type="checkbox" id="prone" class="state-checkbox">
+                    <label for="prone">Prone</label><br>
+                    <input type="checkbox" id="restrained" class="state-checkbox">
+                    <label for="restrained">Restrained</label><br>
+                    <input type="checkbox" id="stunned" class="state-checkbox">
+                    <label for="stunned">Stunned</label><br>
+                    <input type="checkbox" id="unconscious" class="state-checkbox">
+                    <label for="unconscious">Unconscious</label><br>
+                </div>
+            </div>
+            <!-- Exhaustion Levels -->
+            <div class="state-group">
+                <h3>Exhaustion Levels</h3>
+                <div class="exhaustion-levels">
+                    <label><input type="radio" name="exhaustion" value="0">0</label><br>
+                    <label><input type="radio" name="exhaustion" value="1">1</label><br>
+                    <label><input type="radio" name="exhaustion" value="2">2</label><br>
+                    <label><input type="radio" name="exhaustion" value="3">3</label><br>
+                    <label><input type="radio" name="exhaustion" value="4">4</label><br>
+                    <label><input type="radio" name="exhaustion" value="5">5</label><br>
+                    <label><input type="radio" name="exhaustion" value="6">6</label><br>
+                </div>
+            </div>
+            <button onclick="saveSettings()">Save</button>
+        </div>
+    </div>
+
     <h2>Characters</h2>
     <div class="characters-list">
         <div th:each="character : ${characters}" class="character-item">
@@ -92,6 +146,7 @@
     <h2>Current Order</h2>
     <div class="current-order" id="combatants-container">
         <div class="combatant-card" th:each="combatant, iterStat : ${combatants}" th:id="${combatant.id}" th:data-initiative="${combatant.initiative}" th:class="${'combatant-card ' + (combatant.type == 'M' ? 'monster-combatant' : 'character-combatant')}">
+            <button class="settings-btn" onclick="openSettingsModal(this)">⚙️</button>
             <button class="delete-btn" onclick="deleteRow(this)">✕</button>
             <div class="combatant-header">
                 <span class="combatant-name" th:text="${combatant.name}"></span>

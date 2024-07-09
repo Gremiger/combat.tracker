@@ -44,6 +44,125 @@ function openModal(modalName) {
     document.getElementById(modalName).style.display = "block";
 }
 
+// Function to open the settings modal
+function openSettingsModal(button) {
+    const modal = document.getElementById('settingsModal');
+    modal.style.display = 'block';
+
+    // Get the closest combatant card (parent element of the button)
+    const combatantCard = button.closest('.combatant-card');
+
+    // Clear previous state checkboxes if any
+    const stateList = modal.querySelector('.state-list');
+    stateList.innerHTML = '';
+
+    // Populate DND states checkboxes
+    const dndStates = [
+        'Blinded', 'Charmed', 'Deafened', 'Frightened', 'Grappled',
+        'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified',
+        'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious'
+    ];
+
+    dndStates.forEach(state => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'state-checkbox';
+        checkbox.id = state.toLowerCase();
+        const label = document.createElement('label');
+        label.htmlFor = state.toLowerCase();
+        label.innerText = state;
+
+        const stateRow = document.createElement('div');
+        stateRow.className = 'state-row';
+        stateRow.appendChild(checkbox);
+        stateRow.appendChild(label);
+        stateList.appendChild(stateRow);
+    });
+
+    // Populate exhaustion levels radio buttons
+    const exhaustionLevels = modal.querySelector('.exhaustion-levels');
+    if (exhaustionLevels) {
+        exhaustionLevels.innerHTML = '';
+
+        for (let i = 0; i <= 6; i++) {
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.className = 'exhaustion-radio';
+            radio.name = 'exhaustion-level';
+            radio.id = `exhaustion-level-${i}`;
+            radio.value = i;
+            const label = document.createElement('label');
+            label.htmlFor = `exhaustion-level-${i}`;
+            label.innerText = `${i}`;
+
+            const levelRow = document.createElement('div');
+            levelRow.className = 'level-row';
+            levelRow.appendChild(radio);
+            levelRow.appendChild(label);
+            exhaustionLevels.appendChild(levelRow);
+        }
+    } else {
+        console.error('Element with class "exhaustion-levels" not found in modal.');
+    }
+
+    // Store the combatant card reference in the modal
+    modal.dataset.combatantCardId = combatantCard.id;
+}
+
+// Function to close the settings modal
+function closeSettingsModal() {
+    const modal = document.getElementById('settingsModal');
+    modal.style.display = 'none';
+}
+
+// Function to save settings
+function saveSettings() {
+    const modal = document.getElementById('settingsModal');
+
+    // Retrieve the stored combatant card ID
+    const combatantCardId = modal.dataset.combatantCardId;
+    const combatantCard = document.getElementById(combatantCardId);
+
+    if (!combatantCard) {
+        console.error(`Combatant card with ID ${combatantCardId} not found.`);
+        return;
+    }
+
+
+    // Save selected DND states
+    const stateCheckboxes = modal.querySelectorAll('.state-checkbox');
+    const selectedStates = Array.from(stateCheckboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.id);
+
+    console.log('Selected states:', selectedStates);
+
+    // Save selected exhaustion level
+    const selectedExhaustionLevel = modal.querySelector('input[name="exhaustion-level"]:checked');
+    const exhaustionLevel = selectedExhaustionLevel ? selectedExhaustionLevel.value : '';
+
+    console.log('Selected exhaustion level:', exhaustionLevel);
+
+    // Close the modal after saving
+    closeSettingsModal();
+    
+    // Update the combatant card with the saved settings
+    // Example: Update states
+    const stateContainer = combatantCard.querySelector('.states-container');
+    stateContainer.innerHTML = ''; // Clear previous states
+
+    selectedStates.forEach(state => {
+        const stateElement = document.createElement('div');
+        stateElement.textContent = state;
+        stateContainer.appendChild(stateElement);
+    });
+
+    // Example: Update exhaustion level
+    const exhaustionElement = combatantCard.querySelector('.exhaustion-level');
+    exhaustionElement.textContent = `Exhaustion Level: ${exhaustionLevel}`;
+
+}
+
 // Function to close a modal
 function closeModal(modalName) {
     document.getElementById(modalName).style.display = "none";

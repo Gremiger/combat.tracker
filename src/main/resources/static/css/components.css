@@ -260,6 +260,41 @@
     animation: checking-animation 0.3s ease-in-out;
 }
 
+.state-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.state-row {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; 
+    margin-bottom: 10px; 
+    flex-basis: calc(50% - 12px); 
+}
+
+.state-checkbox {
+    margin-right: 5px;
+}
+
+.exhaustion-levels {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.level-row {
+    margin-right: 20px; /* Adjust margin as needed */
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.exhaustion-levels label {
+    margin-right: 10px; 
+    margin-left: 7px;
+}
+
 .theme-switcher {
   position: fixed;
   top: 20px;

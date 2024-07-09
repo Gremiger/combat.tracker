@@ -56,10 +56,10 @@
     color: white;
 }
 
-.delete-btn {
+.delete-btn,
+.settings-btn {
     position: absolute;
     top: 5px;
-    right: 5px;
     width: 20px;
     height: 20px;
     background-color: #806c55;
@@ -76,8 +76,16 @@
     font-weight: bolder;
 }
 
-.delete-btn:hover {
-    background-color: #c0392b;
+.settings-btn {
+    right: 30px;
+}
+
+.delete-btn {
+    right: 5px;
+}
+
+.delete-btn:hover, .settings-btn:hover {
+    background-color: #c0392b; 
 }
 
 .dead-character .delete-btn {
