@@ -120,6 +120,9 @@ function endTurn(button) {
 // Call initializeTurnOrder when the page loads
 document.addEventListener('DOMContentLoaded', initializeTurnOrder);
 
+// Call InitializeDeathSaveCounters when the page loads
+document.addEventListener('DOMContentLoaded', initializeDeathSaveCounters);
+
 /**
  * Updates the combatants list in the DOM based on the updated combatants data from the server.
  * @param {Array} combatants - The updated combatants list.
@@ -161,6 +164,41 @@ function updateCombatantsList(combatants) {
                     <input type="number" class="dmg-heal" min="0" placeholder="HP">
                     <button onclick="healCombatant(this)" class="btn-action btn-heal">🩹 HEAL</button>
                     <button onclick="dmgCombatant(this)" class="btn-action btn-damage">👊🏼 DAMAGE</button>
+                </div>
+            </div>
+            <div class="death-save-counter" style="display: none;">
+                <div class="death-save-header">
+                    <span class="death-save-label">DEATH SAVES</span>
+                </div>
+                <div class="death-save-boxes">
+                    <div class="fail-section">
+                        <div class="fail-boxes">
+                            <label for="fail1">
+                                <input type="checkbox" id="fail1" class="fail-checkbox">
+                            </label>
+                            <label for="fail2">
+                                <input type="checkbox" id="fail2" class="fail-checkbox">
+                            </label>
+                            <label for="fail3">
+                                <input type="checkbox" id="fail3" class="fail-checkbox">
+                            </label>
+                        </div>
+                        <span class="fail-text">FAILED</span>
+                    </div>
+                    <div class="save-section">
+                        <div class="save-boxes">
+                            <label for="save1">
+                                <input type="checkbox" id="save1" class="save-checkbox">
+                            </label>
+                            <label for="save2">
+                                <input type="checkbox" id="save2" class="save-checkbox">
+                            </label>
+                            <label for="save3">
+                                <input type="checkbox" id="save3" class="save-checkbox">
+                            </label>
+                        </div>
+                        <span class="success-text">SUCCESS</span>
+                    </div>
                 </div>
                 <button class="revive-btn" onclick="reviveCombatant(this)" style="display: none;">⚰️ Revive</button>
             </div>
@@ -256,6 +294,7 @@ function markAsDead(combatantCard) {
     combatantCard.classList.add('dead-character');
     combatantCard.querySelector('.delete-btn').style.display = 'none';
     combatantCard.querySelector('.revive-btn').style.display = 'block';
+    combatantCard.querySelector('.death-save-counter').style.display = 'block';
 
     // Remove from turn order if it's the current turn
     if (combatantCard.classList.contains('active-turn')) {
@@ -266,13 +305,16 @@ function markAsDead(combatantCard) {
 function reviveCombatant(button) {
     const parent = button.closest('.combatant-card');
     parent.classList.remove('dead-character');
-    parent.querySelector('.delete-btn').style.display = 'block';
+    parent.classList.add('revive-animation');
+    parent.querySelector('.delete-btn').style.display = 'flex';
+    parent.querySelector('.death-save-counter').style.display = 'none';
     button.style.display = 'none';
 
     // Set health to 1
     const healthElement = parent.querySelector('.temporal-health');
     healthElement.innerText = '1';
 
+    resetDeathSaveCounters(parent);
     // Update server-side data
     const combatantId = parent.id;
     axios.post('/reviveCombatant', `combatantId=${encodeURIComponent(combatantId)}`, {
@@ -286,6 +328,11 @@ function reviveCombatant(button) {
     .catch(error => {
         console.error('Error reviving combatant: ', error.response.data);
     });
+
+    // Remove the animation class after animation ends
+    parent.addEventListener('animationend', () => {
+        parent.classList.remove('revive-animation');
+    }, { once: true });
 }
 
 /**
@@ -344,6 +391,39 @@ function deleteRow(button) {
     })
     .catch(function(error) {
         console.error('Error deleting combatant: ', error.response.data);
+    });
+}
+
+function initializeDeathSaveCounters() {
+    const combatants = document.querySelectorAll('.combatant-card');
+    combatants.forEach(combatant => {
+        const checkboxes = combatant.querySelectorAll('.save-checkbox, .fail-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleDeathSaveChange);
+        });
+    });
+}
+
+function handleDeathSaveChange(event) {
+    const combatantCard = event.target.closest('.combatant-card');
+    const saveCheckboxes = combatantCard.querySelectorAll('.save-checkbox:checked');
+    const failCheckboxes = combatantCard.querySelectorAll('.fail-checkbox:checked');
+
+    if (saveCheckboxes.length === 3) {
+        reviveCombatant(combatantCard.querySelector('.revive-btn'));
+    } else if (failCheckboxes.length === 3) {
+        killCombatant(combatantCard);
+    }
+}
+
+function killCombatant(combatantCard) {
+    // TODO: What are we going to do when the 3 death saves fail?
+}
+
+function resetDeathSaveCounters(combatantCard) {
+    const checkboxes = combatantCard.querySelectorAll('.save-checkbox, .fail-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
     });
 }
 
