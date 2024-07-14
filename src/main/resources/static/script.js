@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Get a reference to the image element
     const themeIcon = document.getElementById('theme-icon');
 
@@ -81,28 +81,24 @@ function openSettingsModal(button) {
 
     // Populate exhaustion levels radio buttons
     const exhaustionLevels = modal.querySelector('.exhaustion-levels');
-    if (exhaustionLevels) {
-        exhaustionLevels.innerHTML = '';
+    exhaustionLevels.innerHTML = '';
 
-        for (let i = 0; i <= 6; i++) {
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.className = 'exhaustion-radio';
-            radio.name = 'exhaustion-level';
-            radio.id = `exhaustion-level-${i}`;
-            radio.value = i;
-            const label = document.createElement('label');
-            label.htmlFor = `exhaustion-level-${i}`;
-            label.innerText = `${i}`;
+    for (let i = 0; i <= 6; i++) {
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.className = 'exhaustion-radio';
+        radio.name = 'exhaustion-level';
+        radio.id = `exhaustion-level-${i}`;
+        radio.value = i;
+        const label = document.createElement('label');
+        label.htmlFor = `exhaustion-level-${i}`;
+        label.innerText = `${i}`;
 
-            const levelRow = document.createElement('div');
-            levelRow.className = 'level-row';
-            levelRow.appendChild(radio);
-            levelRow.appendChild(label);
-            exhaustionLevels.appendChild(levelRow);
-        }
-    } else {
-        console.error('Element with class "exhaustion-levels" not found in modal.');
+        const levelRow = document.createElement('div');
+        levelRow.className = 'level-row';
+        levelRow.appendChild(radio);
+        levelRow.appendChild(label);
+        exhaustionLevels.appendChild(levelRow);
     }
 
     // Store the combatant card reference in the modal
@@ -117,6 +113,7 @@ function closeSettingsModal() {
 
 // Function to save settings
 function saveSettings() {
+    // TODO This doesn't saves correctly
     const modal = document.getElementById('settingsModal');
 
     // Retrieve the stored combatant card ID
@@ -145,7 +142,7 @@ function saveSettings() {
 
     // Close the modal after saving
     closeSettingsModal();
-    
+
     // Update the combatant card with the saved settings
     // Example: Update states
     const stateContainer = combatantCard.querySelector('.states-container');
@@ -176,7 +173,7 @@ function isAnyModalOpen() {
 // Function to close all modals
 function closeAllModals() {
     var modals = document.querySelectorAll('.modal');
-    modals.forEach(function(modal) {
+    modals.forEach(function (modal) {
         modal.style.display = 'none';
     });
 }
@@ -192,13 +189,13 @@ function addToCombat(id, type) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    .then(response => {
-        console.log('Combatant added to combat: ', response.data);
-        updateCombatantsList(response.data.combatants);
-    })
-    .catch(error => {
-        console.error('Error adding combatant to combat: ', error.response.data);
-    });
+        .then(response => {
+            console.log('Combatant added to combat: ', response.data);
+            updateCombatantsList(response.data.combatants);
+        })
+        .catch(error => {
+            console.error('Error adding combatant to combat: ', error.response.data);
+        });
 }
 
 // Make the new function global
@@ -333,7 +330,7 @@ function updateCombatantsList(combatants) {
             const endTurnBtn = document.createElement('button');
             endTurnBtn.className = 'end-turn-btn';
             endTurnBtn.textContent = '⏳ End Turn';
-            endTurnBtn.onclick = function() { endTurn(this); };
+            endTurnBtn.onclick = function () { endTurn(this); };
             card.appendChild(endTurnBtn);
         }
     });
@@ -359,13 +356,13 @@ function healCombatant(button) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    .then(response => {
-        console.log('Combatant Healed: ', response.data);
-        updateCombatantHealth(button, response.data.newTemporalHealth);
-    })
-    .catch(error => {
-        console.error('Error in healing: ', error.response.data);
-    });
+        .then(response => {
+            console.log('Combatant Healed: ', response.data);
+            updateCombatantHealth(button, response.data.newTemporalHealth);
+        })
+        .catch(error => {
+            console.error('Error in healing: ', error.response.data);
+        });
 }
 
 /**
@@ -386,13 +383,13 @@ function dmgCombatant(button) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    .then(response => {
-        console.log('Combatant Damaged: ', response.data);
-        updateCombatantHealth(button, response.data.newTemporalHealth);
-    })
-    .catch(error => {
-        console.error('Error in damaging: ', error.response.data);
-    });
+        .then(response => {
+            console.log('Combatant Damaged: ', response.data);
+            updateCombatantHealth(button, response.data.newTemporalHealth);
+        })
+        .catch(error => {
+            console.error('Error in damaging: ', error.response.data);
+        });
 }
 
 function updateCombatantHealth(button, newHealth) {
@@ -441,12 +438,12 @@ function reviveCombatant(button) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    .then(response => {
-        console.log('Combatant revived: ', response.data);
-    })
-    .catch(error => {
-        console.error('Error reviving combatant: ', error.response.data);
-    });
+        .then(response => {
+            console.log('Combatant revived: ', response.data);
+        })
+        .catch(error => {
+            console.error('Error reviving combatant: ', error.response.data);
+        });
 
     // Remove the animation class after animation ends
     parent.addEventListener('animationend', () => {
@@ -463,21 +460,21 @@ function setInitiative(button) {
     var combatantID = parent.id;
     var amount = parent.querySelector('.updatedInit').value;
     axios.post('/changeInitiative', 'combatantId=' + encodeURIComponent(combatantID) + '&amount=' + encodeURIComponent(amount), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-    .then(function(response) {
-        console.log('Combatant Initiative: ', response.data);
-        var initiativeElement = parent.querySelector('.currentInitiative');
-        if (initiativeElement) {
-            initiativeElement.innerText = response.data.newInitiative;
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-        updateCombatantsList(response.data.combatants);
     })
-    .catch(function(error) {
-        console.error('Error setting initiative: ', error.response.data);
-    });
+        .then(function (response) {
+            console.log('Combatant Initiative: ', response.data);
+            var initiativeElement = parent.querySelector('.currentInitiative');
+            if (initiativeElement) {
+                initiativeElement.innerText = response.data.newInitiative;
+            }
+            updateCombatantsList(response.data.combatants);
+        })
+        .catch(function (error) {
+            console.error('Error setting initiative: ', error.response.data);
+        });
 }
 
 /**
@@ -499,18 +496,18 @@ function deleteRow(button) {
     }
 
     axios.post('/deadMan', 'combatantId=' + encodeURIComponent(combatantID), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-    .then(function(response) {
-        console.log('Combatant deleted: ', response.data);
-        parent.remove();
-        initializeTurnOrder(); // Reinitialize turn order after deletion
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
     })
-    .catch(function(error) {
-        console.error('Error deleting combatant: ', error.response.data);
-    });
+        .then(function (response) {
+            console.log('Combatant deleted: ', response.data);
+            parent.remove();
+            initializeTurnOrder(); // Reinitialize turn order after deletion
+        })
+        .catch(function (error) {
+            console.error('Error deleting combatant: ', error.response.data);
+        });
 }
 
 function initializeDeathSaveCounters() {
