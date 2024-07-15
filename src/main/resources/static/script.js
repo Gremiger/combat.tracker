@@ -427,6 +427,56 @@ function resetDeathSaveCounters(combatantCard) {
     });
 }
 
+let spellList = [];
+
+// Load spells from JSON file
+async function loadSpells() {
+    try {
+        const response = await fetch('/spells/spells.json');
+        spellList = await response.json();
+        console.log('Spells loaded:', spellList);
+        displaySpells(spellList);
+    } catch (error) {
+        console.error('Error loading spells:', error);
+    }
+}
+
+// Display spells in the modal
+function displaySpells(spells) {
+    const spellListElement = document.getElementById('spellList');
+    spellListElement.innerHTML = '';
+
+    spells.forEach(spell => {
+        const spellItem = document.createElement('div');
+        spellItem.className = 'spell-item';
+        spellItem.innerHTML = `
+            <span class="spell-name">${spell.name}</span>
+            <div class="spell-info">
+                <span>Level: ${spell.level}</span>
+                <span>Casting Time: ${spell.casting_time}</span>
+                <span>Range: ${spell.range}</span>
+                <span>Components: ${spell.components}</span>
+                <span>Duration: ${spell.duration}</span>
+            </div>
+            <div class="spell-description">${spell.desc}</div>
+        `;
+        spellListElement.appendChild(spellItem);
+    });
+}
+
+// Search spells
+function searchSpells() {
+    const searchTerm = document.getElementById('spellSearch').value.toLowerCase();
+    const filteredSpells = spellList.filter(spell => 
+        spell.name.toLowerCase().includes(searchTerm) ||
+        spell.desc.toLowerCase().includes(searchTerm)
+    );
+    displaySpells(filteredSpells);
+}
+
+// Load spells when the page loads
+document.addEventListener('DOMContentLoaded', loadSpells);
+
 // Make functions global
 window.healCombatant = healCombatant;
 window.dmgCombatant = dmgCombatant;

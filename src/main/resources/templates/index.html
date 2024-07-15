@@ -17,6 +17,8 @@
         <img id="theme-icon" th:src="@{images/sun-icon.png}" alt="Change Theme">
     </div>
 
+    <button class="fixed-button" onclick="openModal('spellListModal')"><i class="fas fa-magic"></i></button>
+
     <div class="btn-group">
         <button class="btn-medieval" onclick="openModal('addCharacterModal')">
             <i class="fas fa-plus beat-rotate-on-hover"></i> Add Character
@@ -60,6 +62,20 @@
                 <input id="monsterHealth" min="1" name="health" required type="number" placeholder="0" class="form-control"><br><br>
                 <button type="submit" class="btn-medieval-primary">Add Monster</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Spell List Modal -->
+    <div class="modal" id="spellListModal">
+        <div class="modal-content">
+            <div class="modal-spell-header">
+                <h2>Spell List</h2>
+                <span onclick="closeModal('spellListModal')" class="close-btn">&times;</span>
+            </div>
+            <input type="text" id="spellSearch" onkeyup="searchSpells()" placeholder="Search for spells...">
+            <div id="spellList" class="spell-list">
+                <!-- Spells will be dynamically added here -->
+            </div>
         </div>
     </div>
 
